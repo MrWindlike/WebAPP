@@ -1,0 +1,84 @@
+/*all*/
+*
+{
+	margin: 0;
+	padding: 0;
+	font-family: Raleway,sans-serif;
+	color: #eaf4f7;
+	font-size: 4.5vw;
+	max-width: 1080px;
+}
+
+html
+{
+	width: 100vw;
+	height: 100vh;
+}
+
+body
+{
+	width: 100vw;
+	height: 100vh;
+}
+
+/*header*/
+
+#header
+{
+	z-index: 4;
+	position: relative;
+	width: 100vw;
+	height: 9.6vmax;
+	margin: auto;
+	/*padding-left: 32vw;*/
+	background: black;
+	vertical-align: center;
+}
+
+.menuText
+{
+	display: inline-block;
+	width: 12.8vw;
+	height: 9.5vh;
+	padding-top: 2.6vh;
+	padding-bottom: 2.6vh;
+	margin-left: 16.1vw;
+	vertical-align: center;
+}
+
+.menuText:first-child{ margin-left: 32%; }
+.menuTextNotChoice{ color: #7e7e7e; }
+
+#textBorder
+{
+	position: absolute;
+	left: 24%;
+	top: 0;
+	width: 15%;
+	height: 9.3vmax;
+	border-bottom: blue 0.5vh solid;
+}
+
+#searchButton
+{
+
+}
+
+#searchButton #circle
+{
+	background: gradient(radius ,50% 50%, rgba(255,255,255,0), rgba(255,255,255,1));
+}
+
+/*mainPage*/
+#mainPage
+{
+	width: 100vw;
+	height: 90.4vh;
+	background: #1f1f1f;
+}
+
+.videoBox
+{
+	height: 30.4vh;
+	background: #525252;
+}

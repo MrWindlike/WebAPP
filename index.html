@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="user-scalable=no" />
+	<meta name="format-detection" content="telephone=no">
+	<title>WebApp</title>
+	<link rel="stylesheet" type="text/css" href="css/style.css">
+
+	<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="js/ViewCtrl.js"></script>
+	<script type="text/javascript">
+		$().ready(function(){
+				ViewCtrl.seachCtrl();
+				ViewCtrl.carouselCtrl();
+				ViewCtrl.pageCtrl();
+		})
+	</script>
+</head>
+<body>
+	<header id="header">
+		<div class="menuText">最新</div>	
+		<div class="menuText menuTextNotChoice">分类</div>
+		<div id="textBorder"></div>
+		<input type="text" id="search" placeholder="输入搜索内容"></input>
+		<dir id="searchButton">
+			<div id="circle"><div id="line"></div></div>
+		</dir>
+	</header>
+	<div id="bodyView">
+		<div id="bodyBox">
+			<div id="mainPage" style="transform: translate(0,0);">
+				<div class="container">
+					<div id="carouselContainer">
+						<div id="Carousel" style="left:0;transform:translate(0,0);">
+							<div class="videoBox" style="background: #525252 url(img/html5.jpg) no-repeat;">
+								<div class="cover"></div>
+								<div class="title">TITLE</div>
+								<div class="information">作者 / 佚名</div>
+							</div><!-- 
+							 --><div class="videoBox" style="background: #525252 url(img/css.jpg) no-repeat;">
+								 	<div class="cover"></div>
+							 </div><!-- 
+							 --><div class="videoBox" style="background: #525252 url(img/javascript.jpg) no-repeat;">
+								 	<div class="cover"></div>
+							 </div><!-- 
+							  --><div class="videoBox" style="background: #525252 url(img/php.jpg) no-repeat;">
+								 	<div class="cover"></div>
+							 </div>
+						</div>
+						<div id="indexContainer">
+								 <div class="indexSelected"></div>
+								 <div class="index"></div>
+								 <div class="index"></div>
+								 <div class="index"></div>
+						</div>
+					</div>
+					<div class="videoBox" style="background: #525252 url(img/css.jpg) no-repeat;">
+						<div class="overlay"></div>
+						<div class="title">TITLE</div>
+						<div class="information">作者 / 佚名</div>
+					</div>
+					<div class="videoBox" style="background: #525252 url(img/javascript.jpg) no-repeat;">
+						<div class="overlay"></div>
+					</div>
+					<div class="videoBox" style="background: #525252 url(img/php.jpg) no-repeat;">
+						<div class="overlay"></div>
+					</div>
+				</div>
+				<div id="footer">没有更多内容啦(。・・)ノ</div>
+			</div>
+			<div id="classifyPage">
+					<div class="container">
+						<div class="icon" style="background: black url(img/html_icon.jpg) no-repeat"></div><!-- 
+						 --><div class="icon" style="background: black url(img/css_icon.jpg) no-repeat"></div><!-- 
+						 --><div class="icon" style="background: black url(img/js_icon.jpg) no-repeat"></div><!-- 
+						 --><div class="icon" style="background: black url(img/php_icon.jpg) no-repeat"></div><!-- 
+						 --><div class="icon" style="background: black url(img/mysql_icon.png) no-repeat"></div>
+					</div>
+			</div>
+		</div>	
+	</div>
+</body>
+</html>

@@ -1,0 +1,309 @@
+/*all*/
+*
+{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: Raleway,sans-serif;
+	color: #eaf4f7;
+	/*font-size: 4.5vw;*/
+	font-size: 45px;
+	/*pointer-events: none;*/
+	user-select:none;
+}
+
+html
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 100vw;
+	max-width: 1080px;
+}
+
+body
+{
+	width: 100vw;
+	max-width: 1080px;
+	min-height: 100vh;
+	background: #1f1f1f;
+}
+
+/*header*/
+
+#header
+{
+	z-index: 4;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 160px;
+	/*height: 9.6vmax;*/
+	/*padding-left: 32vw;*/
+	background: black;
+	box-shadow: 0 0 20px black;
+	max-width: 1080px;
+}
+
+.menuText
+{
+	display: inline-block;
+	width: 12.8%;
+	height: 9.5vmax;
+	/*padding-top: 2.6vmax;*/
+	padding-top: 60px;
+	padding-bottom: 2.6vmax;
+	margin-left: 10%;
+	vertical-align: center;
+}
+
+.menuText:first-child{ margin-left: 32%; }
+.menuTextNotChoice{ color: #7e7e7e; }
+
+#textBorder
+{
+	position: absolute;
+	left: 30.5%;
+	bottom: 0;
+	width: 11.5%;
+	height: 9.3vmax;
+	border-bottom: #eaf4f7 5px solid;
+	/*transition: all .3s ease;
+	-webkit-transition: all .3s ease;*/
+}
+
+#search
+{
+	position: absolute;
+	left: 0% !important;
+	bottom: 0;
+	width: 85%;
+	height: 100%;
+	border-radius: 10px;
+	color: black;
+	font-family: "微软雅黑";
+	transition: transform ease .3s;
+	transform: scale(0,1);
+	transform-origin: right;
+}
+
+#search:focus
+{
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
+}
+
+#searchButton
+{
+	position: absolute;
+	right: 4.0vmin;
+	top: 45%;
+	width: 6.5vmin;
+	height: 3.8vmax;
+}
+
+#searchButton #circle
+{
+	position: relative;
+	width: 50%;
+	/*height: 2.5vmax;*/
+	padding-bottom: 50%;
+	border-radius: 50%;
+	box-shadow: 0 0 0 5px #eaf4f7;
+}
+
+#searchButton #line
+{
+	position: absolute;
+	right: -15px;
+	bottom: -8px;
+	width: 20px;
+	height: 5px;
+	background: #eaf4f7;
+	transform: rotate(45deg);
+}
+
+/*body*/
+#bodyView
+{
+	position: relative;
+	width: 100vw;
+	overflow: hidden;
+	max-width: 1080px;
+}
+
+#bodyBox
+{
+	width: 200%;
+	/*padding-bottom: 10vh;*/
+	/*transform: translate(0,0);*/
+}
+
+/*mainPage*/
+#mainPage
+{
+	float: left;
+	position: relative;
+	display: inline-block;
+	/*margin-top: 9.6vmax;*/
+	margin-top: 160px;
+	margin-bottom: 7%;
+	width: 100vw;
+	/*height: 90.4vh;*/
+	background: #1f1f1f;
+	max-width: 1080px;
+}
+
+.container
+{
+	overflow: hidden;
+}
+#carouselContainer{ position: relative; }
+#Carousel
+{
+	position: relative;
+	width: 400%;
+	padding-bottom: 50%;
+	transition: transform ease .55s;
+	-webkit-transition: transform ease .5s;
+	/*transition: left ease .1s;
+	-webkit-transition: left ease .1s;*/
+}
+
+#Carousel .videoBox
+{
+	position: relative;
+	display: inline-block;
+	width: 25%;
+	padding-bottom: 12.5%;
+}
+
+#Carousel .title
+{
+	left: 0;
+	right: 0;
+	top:35%;
+	text-align: center;
+	font-size: 60px;
+}
+
+#Carousel .information
+{
+	left: 0;
+	right: 0;
+	top: 55%;
+	text-align: center;
+}
+
+#indexContainer
+{
+	z-index: 4;
+	position: absolute;
+	left: 37%;
+	bottom: 1%;
+}
+
+.index
+{
+	display: inline-block;
+	width: 5.4vmin;
+	/*height: 0.6vmax;*/
+	padding-bottom: 3%;
+	background: rgba(255,255,255,.2);
+}
+
+.indexSelected
+{
+	display: inline-block;
+	width: 5.4vmin;
+	/*height: 0.6vmax;*/
+	padding-bottom: 3%;
+	background: rgba(255,255,255,.6);
+}
+
+.videoBox
+{
+	position: relative;
+	float: left;
+	width: 100%;
+	padding-bottom: 50%;
+	/*height: 30vmax;*/
+	background-size: 100% 100% !important;
+}
+
+.title
+{
+	z-index: 5;
+	position: absolute;
+	top: 65%;
+	left: 3%;
+	font-size: 50px;
+	font-weight: bold;
+}
+
+.information
+{
+	z-index: 5;
+	position: absolute;
+	top: 80%;
+	left: 3%;
+	font-size: 40px;
+}
+
+.cover
+{
+	z-index: 3;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0,0,0,0.5);
+}
+
+.overlay
+{
+	z-index: 3;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 100%;
+	height: 50%;
+	background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.75));
+}
+
+#footer
+{
+	position: absolute;
+	padding-top: 4%;
+	/*bottom: -13.5%;*/
+	width: 100%;
+	/*height: 6.6vh;*/
+	padding-bottom: 4%;
+	background: black;
+	text-align: center;
+	border-bottom: 10px #666666 double;
+}
+
+/*classifyPage*/
+
+#classifyPage
+{
+	float: left;
+	position: fixed;
+	top: 0;
+	display: inline-block;
+	margin-top: 160px;
+	width: 100vw;
+	height: 90.4vh;
+	background: #1f1f1f;
+	max-width: 1080px;
+}
+
+.icon
+{
+	float: left;
+	display: inline-block;
+	width: 25%;
+	padding-bottom: 25%;
+	background-size: 100% 100% !important;
+}
