@@ -389,7 +389,7 @@ body
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 25vh;
+	top: 25%;
 }
 
 .addInput
@@ -402,7 +402,8 @@ body
 	/*border-radius: 10px;*/
 	background: white;
 	font-size: 1.2em;
-	height: 8vmax;
+	padding-top: 3%;
+	padding-bottom: 3%;
 	color: black;
 	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,1);
     box-shadow: 1px 1px 1px rgba(0,0,0,1);
@@ -425,7 +426,8 @@ body
 	margin-right: auto;
 	width: 100%;
 	background: white;
-	height: 8vmax;
+	padding-top: 3%;
+	padding-bottom: 3%;
 }
 
 #typeSelect option{ color: black; }
@@ -434,8 +436,8 @@ body
 {
 	margin: 0 auto;
 	margin-top: 8vmax;
-	width: 30vmin;
-	padding-bottom: 30vmin;
+	width: 30%;
+	padding-bottom: 30%;
 	background: #e6e9ee;
 	border-radius: 50%;
 }
