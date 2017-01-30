@@ -60,7 +60,7 @@ var ViewCtrl =
 			};
 		var timer = setInterval(play,3000);
 
-		$carousel.bind("touchstart", function(event){
+		$(document).on("touchstart", "#Carousel", function(event){
 			startTime = new Date().getTime();
 			clearInterval(timer);
 			originX = startX = event.changedTouches[0].pageX;
@@ -70,7 +70,7 @@ var ViewCtrl =
 			else if(index == 0)
 					$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
 		});
-		$carousel.bind("touchmove", function(event){
+		$(document).on("touchmove", "#Carousel", function(event){
 			endX = event.changedTouches[0].pageX;
 			endY = event.changedTouches[0].pageY;
 
@@ -97,7 +97,7 @@ var ViewCtrl =
 			// });
 			startX = endX;
 		});
-		$carousel.bind("touchend", function(){
+		$(document).on("touchend", "#Carousel", function(){
 			var translate = $carousel.css("transform");
 			var array = translate.substring(7);
 			var temp = array.split(",");
@@ -157,7 +157,7 @@ var ViewCtrl =
 			$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(" + pageWidth*0.24*index + "px,0,0)");
 		};
 
-		$(".container>.videoBox, #classifyPage, .menuText").bind("touchstart", function(event){
+		$(document).on("touchstart", ".container>.videoBox, #classifyPage, .menuText", function(event){
 			// event.preventDefault();
 			var $this = $(this);
 			originX = startX = event.changedTouches[0].pageX;
@@ -168,7 +168,7 @@ var ViewCtrl =
 
 		});
 
-		$(".container>.videoBox, #classifyPage").bind("touchmove", function(event){
+		$(document).on("touchmove", ".container>.videoBox, #classifyPage", function(event){
 			endX = event.changedTouches[0].pageX;
 			endY = event.changedTouches[0].pageY;
 			var $this = $(this);
@@ -209,7 +209,7 @@ var ViewCtrl =
 			startX = endX;
 			/*startY = endY;*/
 		});
-		$(".container>.videoBox, #classifyPage").bind("touchend", function(event){
+		$(document).on("touchend", ".container>.videoBox, #classifyPage", function(event){
 			endX = event.changedTouches[0].pageX;
 			var translate = $("#mainPage").css("transform");
 			var array = translate.substring(7);
@@ -247,5 +247,60 @@ var ViewCtrl =
 				}
 			}
 		})
-	}
+	},
+
+	addCtrl : function()
+	{
+		var clicked = false;
+
+		var hideAddPage = function()
+		{
+			clicked = false;
+			$("#addButton").css("transform", "rotate(0deg)");
+			$("#addPage").css("transform", "translate3d(0,0,0)");
+			$("#inputBox>input:eq(0)").val("");
+			$("#inputBox>input:eq(1)").val("");
+			$("#inputBox>input:eq(2)").val("");
+			$("#inputBox>select").val("独立游戏");
+		};
+
+		$(document).on('touchmove', "#addPage", function(event){
+			event.preventDefault();
+		});
+		$(document).on('touchstart', "#addButton", function(){
+			if(clicked == false)
+			{
+				clicked = true;
+				$("#addButton").css("transform", "rotate(135deg)");
+				$("#addPage").css("transform", "translate3d(0,-100%,0)");
+			}
+			else
+			{
+				hideAddPage();
+			}
+		});
+
+		$(document).on('touchstart', "#submitButton", function(){
+			if($("#inputBox>input:eq(0)").val() == "")
+			{
+				ViewCtrl.messageBoxCtrl("请输入标题！");
+				return ;
+			}
+			else if($("#inputBox>input:eq(1)").val() == "")
+			{
+				ViewCtrl.messageBoxCtrl("请输入链接！");
+				return ;
+			}
+			ModelCtrl.submitData();
+			hideAddPage();
+		});
+	},
+
+	messageBoxCtrl : function(message)
+	{
+		$("#messageBox").html(message).fadeIn('fast').css("transform", "translate3d(0,-50px,0)");
+		setTimeout(function(){
+			$("#messageBox").fadeOut(500);
+		}, 800);
+	},
 }

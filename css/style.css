@@ -138,6 +138,38 @@ body
 	/*transform: translate(0,0);*/
 }
 
+#addButton
+{
+	z-index: 6;
+	position: fixed;
+	right: 5%;
+	bottom: 5%;
+	width: 15%;
+	padding-bottom: 15%;
+	border-radius: 50%;
+	background: rgba(97,199,235,1);
+	-webkit-transition: transform ease .3s;
+    transition: transform ease .3s;
+}
+
+#messageBox
+{
+	display: none;
+	z-index: 8;
+	position: fixed;
+	left: 30%;
+	bottom: 15%;
+	width: 40%;
+	padding-top: 4%;
+	padding-bottom: 4%;
+	border-radius: 10px;
+	background: rgba(246,247,251,.8);
+	color: black;
+	text-align: center;
+	-webkit-transition: transform ease .3s;
+    transition: transform ease .3s;
+}
+
 /*mainPage*/
 #mainPage
 {
@@ -183,7 +215,7 @@ body
 	right: 0;
 	top:35%;
 	text-align: center;
-	font-size: 60px;
+	font-size: 1.2em;
 }
 
 #Carousel .information
@@ -267,8 +299,24 @@ body
 	left: 0;
 	bottom: 0;
 	width: 100%;
-	height: 50%;
+	height: 100%;
 	background: linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,0.75));
+}
+
+.cross
+{
+	position: absolute;
+	left: 15%;
+	top: 48%;
+	text-align: center;
+	width: 70%;
+	height: 5px;
+	background: white;
+}
+
+.cross:nth-child(1)
+{
+	transform: rotate(90deg);
 }
 
 #footer
@@ -306,4 +354,111 @@ body
 	width: 25%;
 	padding-bottom: 25%;
 	background-size: 100% 100% !important;
+}
+
+/*addPage*/
+
+#addPage
+{
+	z-index: 5;
+	position: fixed;
+	left: 0;
+	bottom: -100%;
+	width: 100vw;
+	height: 100%;
+	font-family: "微软雅黑";
+	background: #2b2b2b;
+	text-align: center;
+	-webkit-transition: transform ease .3s;
+    transition: transform ease .3s;
+}
+
+#addTitle
+{
+	text-align: center;
+	font-size: 1.6em;
+	width: 100%;
+	padding-top:3.125%; 
+	padding-bottom:3.125%; 
+	background: black;
+	box-shadow: 0 0 10px black;
+}
+
+#inputBox
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 25vh;
+}
+
+.addInput
+{
+	margin-left:auto;
+	margin-right:auto;
+	margin-bottom: 5%;
+	width: 101%;
+	border: black 2px black;
+	/*border-radius: 10px;*/
+	background: white;
+	font-size: 1.2em;
+	height: 8vmax;
+	color: black;
+	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,1);
+    box-shadow: 1px 1px 1px rgba(0,0,0,1);
+    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+.addInput:focus
+{
+	border-color: #66afe9;
+	outline: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),2px 2px 38px rgba(102,175,233,.8);
+	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),2px 2px 38px rgba(102,175,233,.8);
+}
+
+#typeSelect
+{
+	color: black;
+	margin-left: auto;;
+	margin-right: auto;
+	width: 100%;
+	background: white;
+	height: 8vmax;
+}
+
+#typeSelect option{ color: black; }
+
+#submitButton
+{
+	margin: 0 auto;
+	margin-top: 8vmax;
+	width: 30vmin;
+	padding-bottom: 30vmin;
+	background: #e6e9ee;
+	border-radius: 50%;
+}
+
+.tick:nth-child(1)
+{
+	position: absolute;
+	left: 40%;
+	bottom: 8vmax;
+	width: 10%;
+	height: 10px;
+	background: #434a54;
+	transform: rotate(45deg);
+
+}
+
+.tick:nth-child(2)
+{
+	position: absolute;
+	left: 46%;
+	bottom: 9vmax;
+	width: 15%;
+	height: 10px;
+	background: #434a54;
+	transform: rotate(-45deg);
 }

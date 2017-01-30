@@ -9,12 +9,16 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="js/bmob-min.js"></script>
+	<script type="text/javascript" src="js/ModelCtrl.js"></script>
 	<script type="text/javascript" src="js/ViewCtrl.js"></script>
 	<script type="text/javascript">
 		$().ready(function(){
+				ModelCtrl.loadData();
 				ViewCtrl.seachCtrl();
 				ViewCtrl.carouselCtrl();
 				ViewCtrl.pageCtrl();
+				ViewCtrl.addCtrl();
 		})
 	</script>
 </head>
@@ -34,20 +38,22 @@
 				<div class="container">
 					<div id="carouselContainer">
 						<div id="Carousel" style="left:0;transform:translate(0,0);">
-							<div class="videoBox" style="background: #525252 url(img/html5.jpg) no-repeat;">
-								<div class="cover"></div>
-								<div class="title">TITLE</div>
-								<div class="information">作者 / 佚名</div>
-							</div><!-- 
-							 --><div class="videoBox" style="background: #525252 url(img/css.jpg) no-repeat;">
-								 	<div class="cover"></div>
-							 </div><!-- 
-							 --><div class="videoBox" style="background: #525252 url(img/javascript.jpg) no-repeat;">
-								 	<div class="cover"></div>
-							 </div><!-- 
-							  --><div class="videoBox" style="background: #525252 url(img/php.jpg) no-repeat;">
+							<!-- <div class="videoBox" style="background: #525252 url(img/html5.jpg) no-repeat;">
+								<a href="http://www.w3school.com.cn/html/">
+									<div class="cover"></div>
+									<div class="title">TITLE</div>
+									<div class="information">作者 / 佚名</div>
+								</a>
+							</div>
+							<div class="videoBox" style="background: #525252 url(img/css.jpg) no-repeat;">
 								 	<div class="cover"></div>
 							 </div>
+							<div class="videoBox" style="background: #525252 url(img/javascript.jpg) no-repeat;">
+								 	<div class="cover"></div>
+							 </div>
+							 <div class="videoBox" style="background: #525252 url(img/php.jpg) no-repeat;">
+								 	<div class="cover"></div>
+							 </div> -->
 						</div>
 						<div id="indexContainer">
 								 <div class="indexSelected"></div>
@@ -55,6 +61,13 @@
 								 <div class="index"></div>
 								 <div class="index"></div>
 						</div>
+					</div>
+					<!-- <div class="videoBox" style="background: #525252 url(img/indiegame.jpg) no-repeat;">
+						<a href="http://www.w3school.com.cn/html/">
+							<div class="overlay"></div>
+							<div class="title">TITLE</div>
+							<div class="information">作者 / 佚名</div>
+						</a>
 					</div>
 					<div class="videoBox" style="background: #525252 url(img/css.jpg) no-repeat;">
 						<div class="overlay"></div>
@@ -66,19 +79,46 @@
 					</div>
 					<div class="videoBox" style="background: #525252 url(img/php.jpg) no-repeat;">
 						<div class="overlay"></div>
-					</div>
+					</div> -->
 				</div>
 				<div id="footer">没有更多内容啦(。・・)ノ</div>
 			</div>
 			<div id="classifyPage">
 					<div class="container">
-						<div class="icon" style="background: black url(img/html_icon.jpg) no-repeat"></div><!-- 
+						<div class="icon" style="background: black url(img/indiegame_icon.jpg) no-repeat"></div><!-- 
+						 --><div class="icon" style="background: black url(img/html_icon.jpg) no-repeat"></div><!-- 
 						 --><div class="icon" style="background: black url(img/css_icon.jpg) no-repeat"></div><!-- 
-						 --><div class="icon" style="background: black url(img/js_icon.jpg) no-repeat"></div><!-- 
+						 --><div class="icon" style="background: black url(img/javascript_icon.jpg) no-repeat"></div><!-- 
 						 --><div class="icon" style="background: black url(img/php_icon.jpg) no-repeat"></div><!-- 
 						 --><div class="icon" style="background: black url(img/mysql_icon.png) no-repeat"></div>
 					</div>
 			</div>
+			<div id="addPage">
+				<div id="addTitle">添加</div>
+				<div id="inputBox">
+					<input contenteditable="true" placeholder="标题(最多十六个字符)" class="addInput"  maxlength="16"></input>
+					<input contenteditable="true" placeholder="链接" class="addInput"></input>
+					<input contenteditable="true" placeholder="作者(最多十个字符)" class="addInput" maxlength="10"></input>
+					<select id="typeSelect">
+						<option>独立游戏</option>
+						<option>HTML</option>
+						<option>CSS</option>
+						<option>JavaScript</option>
+						<option>PHP</option>
+						<option>MYSQL</option>
+					</select>
+					<div id="submitButton">
+						<div class="tick"></div>
+						<div class="tick"></div>
+					</div>
+				</div>
+			</div>
+
+			<div id="addButton">
+				<div class="cross"></div>
+				<div class="cross"></div>
+			</div>
+			<div id="messageBox">信息</div>
 		</div>	
 	</div>
 </body>
