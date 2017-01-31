@@ -9,18 +9,18 @@ var ModelCtrl =
 		{
 			$("#resultsPage .videoBox").remove();
 			query.equalTo("type", data.key);
-			$("#resultsPage>.header").html(data.key);
+			$(".resultsheader>i").html(data.key);
 		}
 		else if(data.type == "search")
 		{
 			$("#resultsPage .videoBox").remove();
-			$("#resultsPage>.header").html();
 		}
 		else
 			$(".videoBox").remove();
 		query.find({
 			success : function(results)
 			{
+				var searchFlag = false;
 				for(var i = results.length - 1; i >= 0;i--)
 				{
 					var title = results[i].get('title');
@@ -41,10 +41,18 @@ var ModelCtrl =
 							'</div>';
 					if(data.type == "classify" || data.type == "search")
 					{
-						if(data.type == "search" && str.isMate(title, data.key))
+						if(data.type == "search" && str.isMate(title.toUpperCase(), data.key.toUpperCase()))
+						{
+							searchFlag = true;
+							$(".resultsheader>i").html(data.key.toUpperCase());
 							$(tempate).appendTo($("#resultsPage>.container"));
+							$("#resultsPage").css("transition","transform ease .3s").css("transform", "translate3d(-100%,0,0)");
+							$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(0,0,0)");
+						}
 						else if(data.type == "classify")
 							$(tempate).appendTo($("#resultsPage>.container"));
+						else if(searchFlag == false && i == 0)
+							ViewCtrl.messageBoxCtrl("搜索失败！");
 					}
 					else
 					{
@@ -59,7 +67,7 @@ var ModelCtrl =
 			{
 				alert("获取数据失败:" + error);
 			}
-		})
+		});
 	},
 
 	submitData : function()
