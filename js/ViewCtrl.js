@@ -140,6 +140,7 @@ var ViewCtrl =
 	pageCtrl : function()
 	{
 		var startX, endX, originX, startY, endY, originY;
+		var startScroll, endScroll;
 		var startTime, endTime;
 		var index = 0;
 		var isChangePage = true;
@@ -162,6 +163,7 @@ var ViewCtrl =
 			var $this = $(this);
 			originX = startX = event.changedTouches[0].pageX;
 			originY = startY = event.changedTouches[0].pageY;
+			startScroll = $(window).scrollTop();
 			startTime = new Date().getTime();
 			if($this.hasClass("menuText"))
 				changePage($(".menuText").index(this));
@@ -171,6 +173,7 @@ var ViewCtrl =
 		$(document).on("touchmove", ".container>.videoBox, #classifyPage", function(event){
 			endX = event.changedTouches[0].pageX;
 			endY = event.changedTouches[0].pageY;
+			endScroll = $(window).scrollTop();
 			var $this = $(this);
 			/*MoveX*/
 			var translate = $("#mainPage").css("transform");
@@ -188,7 +191,7 @@ var ViewCtrl =
 			if($this.attr("id") == "classifyPage")
 				event.preventDefault();
 
-			if(Math.abs(endY - originY)*3 < Math.abs(endX - originX))
+			if((Math.abs(endY - originY)*3 < Math.abs(endX - originX)) && (startScroll - endScroll == 0) )
 			{
 				isChangePage = true;
 				if((index == 0 && endX - originX < 0) || (index == 1 && endX - originX > 0))
@@ -211,6 +214,7 @@ var ViewCtrl =
 		});
 		$(document).on("touchend", ".container>.videoBox, #classifyPage", function(event){
 			endX = event.changedTouches[0].pageX;
+			endScroll = $(window).scrollTop();
 			var translate = $("#mainPage").css("transform");
 			var array = translate.substring(7);
 			var temp = array.split(",");
@@ -301,6 +305,40 @@ var ViewCtrl =
 		$("#messageBox").html(message).fadeIn('fast').css("transform", "translate3d(0,-50px,0)");
 		setTimeout(function(){
 			$("#messageBox").fadeOut(500);
+			setTimeout(function(){
+				$("#messageBox").css("transform", "translate3d(0,0,0)");
+			}, 500);
 		}, 800);
+	},
+
+	classifyCtrl : function()
+	{
+		$(document).on("touchend", ".icon", function(){
+			var $this = $(this);
+			var key = $this.attr("data-type");
+			ModelCtrl.loadData({"type":"classify", "key":key});
+			$("#resultsPage").css("transform", "translate3d(-100%,0,0)");
+		})
+
+		$(document).on("touchend", "#backButton", function(){
+			$("#resultsPage").css("transform", "translate3d(0,0,0)");
+		});
+
+		// $(document).on("touchstart", "#resultsPage", function(){
+		// 	if($(this).scrollTop() >= $("#resultsPage>.container").height() - document.documentElement.clientHeight)
+		// 		event.preventDefault();
+		// });
+		// $(document).on("touchmove", "#resultsPage", function(event){
+		// 	var $this = $(this);
+		// 	// alert($("#resultsPage>.container").height() - document.documentElement.clientHeight);
+		// 	// alert($(this).scrollTop());
+
+		// 	if($(this).scrollTop() >= $("#resultsPage>.container").height() - document.documentElement.clientHeight)
+		// 		event.preventDefault();
+		// });
+		// $(document).on("touchend", "#resultsPage", function(){
+		// 	if($(this).scrollTop() >= $("#resultsPage>.container").height() - document.documentElement.clientHeight)
+		// 		event.preventDefault();
+		// });
 	},
 }

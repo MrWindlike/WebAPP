@@ -1,11 +1,23 @@
 var ModelCtrl = 
 {
-	loadData : function()
+	loadData : function(data)
 	{
-		$(".videoBox").remove();
 		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
 		var video = Bmob.Object.extend("video");
 		var query = new Bmob.Query(video);
+		if(data.type == "classify")
+		{
+			$("#resultsPage .videoBox").remove();
+			query.equalTo("type", data.key);
+			$("#resultsPage>.header").html(data.key);
+		}
+		else if(data.type == "search")
+		{
+			$("#resultsPage .videoBox").remove();
+			$("#resultsPage>.header").html();
+		}
+		else
+			$(".videoBox").remove();
 		query.find({
 			success : function(results)
 			{
@@ -16,7 +28,7 @@ var ModelCtrl =
 					var author = results[i].get('author');
 					var type = results[i].get('type');
 					var cover;
-					if(i > results.length - 5)
+					if(i > results.length - 5 && data.type == "get")
 						cover = "cover";
 					else
 						cover = "overlay";
@@ -27,10 +39,20 @@ var ModelCtrl =
 									'<div class="information">作者 / ' + author + '</div>' +
 								'</a>' +
 							'</div>';
-					if(i > results.length - 5)
-						$(tempate).appendTo($("#Carousel"));
+					if(data.type == "classify" || data.type == "search")
+					{
+						if(data.type == "search" && str.isMate(title, data.key))
+							$(tempate).appendTo($("#resultsPage>.container"));
+						else if(data.type == "classify")
+							$(tempate).appendTo($("#resultsPage>.container"));
+					}
 					else
-						$(tempate).appendTo($(".container:first"));
+					{
+						if(i > results.length - 5)
+							$(tempate).appendTo($("#Carousel"));
+						else
+							$(tempate).appendTo($(".container:first"));
+					}
 				}
 			},
 			error : function(error)
@@ -52,17 +74,17 @@ var ModelCtrl =
 			author = $("#inputBox>input:eq(2)").val();
 		var type;
 		if($("#inputBox>select").val() == "独立游戏")
-			type = "indiegame";
+			type = "IndieGame";
 		else if($("#inputBox>select").val() == "HTML")
-			type = "html";
+			type = "HTML";
 		else if($("#inputBox>select").val() == "CSS")
-			type = "css";
+			type = "CSS";
 		else if($("#inputBox>select").val() == "JavaScript")
-			type = "javascript";
+			type = "JavaScript";
 		else if($("#inputBox>select").val() == "PHP")
-			type = "php";
+			type = "PHP";
 		else if($("#inputBox>select").val() == "MYSQL")
-			type = "mysql";
+			type = "MYSQL";
 
 		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
 		var Video = Bmob.Object.extend("video");
@@ -74,7 +96,7 @@ var ModelCtrl =
 
 		video.save(null,{
 			success : function(){
-				ModelCtrl.loadData();
+				ModelCtrl.loadData({"type":"get", "key":""});
 				ViewCtrl.messageBoxCtrl("添加成功！");
 				return true;
 			},
@@ -84,4 +106,51 @@ var ModelCtrl =
 			}
 		});
 	},
-}
+};
+
+var str = 
+{
+	isMate : function(s, t)
+	{
+		var nextval = new Array(t.length);
+		str.getNextval(t, nextval);
+		var i = 0, j = 0;
+
+		while(i < s.length && j < t.length)
+		{
+			if(s.charAt(i) == t.charAt(j) || j == -1)
+			{
+				i++;
+				j++;
+			}
+			else
+				j = nextval[j];
+		}
+
+		if(j == t.length)
+			return true;
+		else
+			return false;
+	},
+
+	getNextval : function(t, nextval)
+	{
+		var i = 1, j = 0;
+
+		nextval[0] = -1;
+
+		while(i < t.length)
+		{
+			if(t.charAt(i) == t.charAt(j) || j == -1)
+			{
+				if(t.charAt(i) != t.charAt(nextval[i]))
+					nextval[++i] = j++;
+				else
+					nextval[++i] = nextval[i];
+			}
+			else
+				j = nextval[j];
+		}
+
+	},
+};
