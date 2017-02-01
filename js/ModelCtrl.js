@@ -44,6 +44,7 @@ var ModelCtrl =
 						if(data.type == "search" && str.isMate(title.toUpperCase(), data.key.toUpperCase()))
 						{
 							searchFlag = true;
+							$("#search").css("transform", "scale(0,1)").val("");
 							$(".resultsheader>i").html(data.key.toUpperCase());
 							$(tempate).appendTo($("#resultsPage>.container"));
 							$("#resultsPage").css("transition","transform ease .3s").css("transform", "translate3d(-100%,0,0)");
@@ -162,3 +163,15 @@ var str =
 
 	},
 };
+
+var Transform = 
+{
+	//n is the parameter of matrix that you want to get. 
+	getMatrix : function(element, n)
+	{
+		var translate = $(element).css("transform");
+		var array = translate.substring(7);
+		var temp = array.split(",");
+		return parseInt(temp[n]);
+	}
+}

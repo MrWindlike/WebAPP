@@ -9,11 +9,9 @@ var ViewCtrl =
 			else
 			{
 				if($search.val() != "")
-				{
 					ModelCtrl.loadData({"type":"search","key":$search.val()});
-					$search.val("");
-				}
-				$search.css("transform", "scale(0,1)");
+				else
+					$search.css("transform", "scale(0,1)");
 			}
 		})
 	},
@@ -165,7 +163,7 @@ var ViewCtrl =
 			$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(" + pageWidth*0.24*index + "px,0,0)");
 		};
 
-		$(document).on("touchstart", ".container>.videoBox, #classifyPage, .menuText", function(event){
+		$(document).on("touchstart", "#mainPage .container>.videoBox, #classifyPage, .menuText", function(event){
 			// event.preventDefault();
 			var $this = $(this);
 			originX = startX = event.changedTouches[0].pageX;
@@ -177,7 +175,7 @@ var ViewCtrl =
 
 		});
 
-		$(document).on("touchmove", ".container>.videoBox, #classifyPage", function(event){
+		$(document).on("touchmove", "#mainPage .container>.videoBox, #classifyPage", function(event){
 			endX = event.changedTouches[0].pageX;
 			endY = event.changedTouches[0].pageY;
 			endScroll = $(window).scrollTop();
@@ -189,11 +187,7 @@ var ViewCtrl =
 			var translateX = parseInt(temp[4]), translateY = parseInt(temp[5]);
 			var moveX = translateX + (endX - startX);
 			/*MoveY*/
-			/*translate = $("#mainPage").css("transform");
-			array = translate.substring(7);
-			temp = array.split(",");
-			var translateY = parseInt(temp[5]);
-			moveY = translateY + (endY - startY);
+			/*moveY = translateY + (endY - startY);
 			var mainPageHeight = $("#mainPage").height();*/
 			if($this.attr("id") == "classifyPage")
 				event.preventDefault();
@@ -219,18 +213,14 @@ var ViewCtrl =
 			startX = endX;
 			/*startY = endY;*/
 		});
-		$(document).on("touchend", ".container>.videoBox, #classifyPage", function(event){
+		$(document).on("touchend", "#mainPage .container>.videoBox, #classifyPage", function(event){
 			endX = event.changedTouches[0].pageX;
 			endScroll = $(window).scrollTop();
-			var translate = $("#mainPage").css("transform");
-			var array = translate.substring(7);
-			var temp = array.split(",");
-			var translateX = Math.abs(parseInt(temp[4]));
 			var pageWidth = $("#mainPage").width();
 			endTime = new Date().getTime();
 
 			//滑动切换页
-			if(Math.abs(endX - originX) >= 50 && (translateX/pageWidth > 0.2 || endTime - startTime < 150) && isChangePage)
+			if(Math.abs(endX - originX) >= 40 && (Math.abs(endX - originX)/pageWidth > 0.5 || endTime - startTime < 150) && isChangePage)
 			{
 				if(index == 0 && endX - originX < 0)
 				{
@@ -318,15 +308,17 @@ var ViewCtrl =
 		}, 800);
 	},
 
-	classifyCtrl : function()
+	resultsPageCtrl : function()
 	{
-		var startY, endY, originY;
+		var startY, endY, originY, startX, endX, originX;
 		var startTime, endTime;
-		var translateY, moveY;
+		var translateY, moveY, transformX, moveX, headerTranslateX, originTranslateX;
+		var direction = 0;		//0 is none, 1 is vertical, 2 is horizontal.
 		$(document).on("touchend", ".icon", function(){
 			var $this = $(this);
 			var key = $this.attr("data-type");
 			ModelCtrl.loadData({"type":"classify", "key":key});
+			$("#resultsPage").css("transition-duration","0s").css("transform", "translate3d(0,0,0)");
 			$("#resultsPage").css("transition","transform ease .3s").css("transform", "translate3d(-100%,0,0)");
 			$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(0,0,0)");
 		})
@@ -338,20 +330,46 @@ var ViewCtrl =
 
 		$(document).on("touchstart", "#resultsPage", function(event){
 			originY = startY = event.changedTouches[0].pageY;
+			originX = startX = event.changedTouches[0].pageX;
 			startTime = new Date().getTime();
+			var translate = $("#resultsPage").css("transform");
+			var array = translate.substring(7);
+			var temp = array.split(",");
+			originTranslateX = parseInt(temp[4]);
 		});
 		$(document).on("touchmove", "#resultsPage", function(event){
 			event.preventDefault();
 			endY = event.changedTouches[0].pageY;
+			endX = event.changedTouches[0].pageX;
 			var translate = $("#resultsPage").css("transform");
 			var array = translate.substring(7);
 			var temp = array.split(",");
 			translateY = parseInt(temp[5]);
+			translateX = parseInt(temp[4]);
+			translate = $(".resultsheader").css("transform");
+			array = translate.substring(7);
+			temp = array.split(",");
+			headerTranslateX = parseInt(temp[4]);
 			moveY = translateY + (endY - startY);
-
-			if(moveY < 0 && moveY > (document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160))
+			moveX = translateX + (endX - startX);
+			// console.log(translateX);
+			// console.log(headerTranslateX);
+			if(direction == 0 && (Math.abs(endX - startX) > Math.abs(endY - startY)) )
+				direction = 2;
+			else if(direction == 0 && (Math.abs(endX - startX) < Math.abs(endY - startY)))
+				direction = 1;
+			if(direction == 1 && 
+				(moveY < 0 && moveY > (document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160)))
 				$("#resultsPage").css("transition-duration", "0s").css("transform", "translate3d(-100%,"+moveY+"px,0)");
+			else if(direction == 2 && (endX - originX) > 0)
+			{
 
+				$("#resultsPage").css("transition-duration", "0s").css("transform", "translate3d("+moveX+"px,"+translateY+"px,0)");
+				$(".resultsheader").css("transition-duration", "0s")
+				.css("transform", "translate3d("+(moveX - originTranslateX)+"px,0,0)");
+			}
+
+			startX = endX;
 			startY = endY;
 
 		});
@@ -360,20 +378,44 @@ var ViewCtrl =
 			var allTime = endTime - startTime;
 			var lastmove = moveY + ((endY - originY)/allTime*500);
 
-			console.log($("#resultsPage>.container").height());
-
-			if(lastmove < 0 && lastmove > (document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160))
-				$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s").css("transform", "translate3d(-100%,"+lastmove+"px,0)");
-			else
+			//vertical
+			if(direction == 1)
 			{
-				if(lastmove >= 0)
-					$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s").css("transform", "translate3d(-100%,0,0)");
-				else if(document.documentElement.clientHeight <= $("#resultsPage>.container").height() - 160)
+				if(lastmove < 0 && lastmove > (document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160))
+					$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s")
+				.css("transform", "translate3d(-100%,"+lastmove+"px,0)");
+				else
 				{
-					lastmove = document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160;
-					$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s").css("transform", "translate3d(-100%,"+lastmove+"px,0)");
+					if(lastmove >= 0)
+						$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s")
+					.css("transform", "translate3d(-100%,0,0)");
+					else if(document.documentElement.clientHeight <= $("#resultsPage>.container").height() - 160)
+					{
+						lastmove = document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160;
+						$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s")
+						.css("transform", "translate3d(-100%,"+lastmove+"px,0)");
+					}
 				}
 			}
+			//horizontal
+			else if(direction == 2)
+			{
+				if((endX - originX)/$("#resultsPage").width() > 0.5 || allTime < 150)
+				{
+					$("#resultsPage").css("transition","transform ease .3s")
+						.css("transform", "translate3d(0,"+translateY+"px,0)");
+					$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(100%,0,0)");
+					// setTimeout($("#resultsPage").css("transition-duration","0s")
+					// 	.css("transform", "translate3d(0,0,0)"), 350);
+				}
+				else
+				{
+					$("#resultsPage").css("transition","transform ease .3s")
+						.css("transform", "translate3d(-100%,"+translateY+"px,0)");
+					$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(0,0,0)");
+				}
+			}
+			direction = 0;
 		});
 	},
 }
