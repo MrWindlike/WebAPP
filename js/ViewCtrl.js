@@ -96,8 +96,11 @@ var ViewCtrl =
 				{
 					change = true;
 					$carousel.css("transition-duration", "0s").css("transform","translate3d(" + moveX + "px, 0, 0)");
+					event.preventDefault();
 				}
-				else
+				else if(canMove == false)
+					event.preventDefault();
+				else if(canMove == false || (Math.abs(moveX) <= Math.abs(moveY)))
 					change = false;
 			// });
 			startX = endX;
@@ -118,14 +121,13 @@ var ViewCtrl =
 					play();
 				}
 				else
-					// requestAnimationFrame(function(){
-						$carousel.css("transition", "transform ease .55s").css("transform", "translate3d(-" + index*25 + "%,0,0)");
-					// });
+					$carousel.css("transition", "transform ease .55s").css("transform", "translate3d(-" + index*25 + "%,0,0)");
+	
 			}
 			//向右滑动
 			else if(endX - originX > 0 && (canMove || index != 0) && change)
 			{
-				if(translateX/$("#Carousel").width() < index*0.25 - 0.075 || endTime - startTime < 200)
+				if(translateX/$("#Carousel").width() < index*0.25 - 0.075 || endTime - startTime < 300)
 				{
 					forward = false;
 					canMove = false;
@@ -200,6 +202,8 @@ var ViewCtrl =
 					$("#mainPage, #classifyPage").css("transition-duration","0s").css("transform", "translate3d(" + moveX + "px, 0, 0)");
 					$("#textBorder").css("transition-duration","0s").css("transform", "translate3d(" + Math.abs(translateX)*0.24 + "px,0,0)");
 				}
+				else
+					event.preventDefault();
 
 			}
 			else
@@ -220,7 +224,7 @@ var ViewCtrl =
 			endTime = new Date().getTime();
 
 			//滑动切换页
-			if(Math.abs(endX - originX) >= 40 && (Math.abs(endX - originX)/pageWidth > 0.5 || endTime - startTime < 150) && isChangePage)
+			if(Math.abs(endX - originX) >= 40 && (Math.abs(endX - originX)/pageWidth > 0.5 || endTime - startTime < 300) && isChangePage)
 			{
 				if(index == 0 && endX - originX < 0)
 				{
@@ -299,13 +303,12 @@ var ViewCtrl =
 
 	messageBoxCtrl : function(message)
 	{
-		$("#messageBox").html(message).fadeIn('fast').css("transform", "translate3d(0,-50px,0)");
+		$("#messageBox").html(message).fadeIn('fast').css("transition", "transform ease .3s").css("transform", "translate3d(0,-50px,0)");
 		setTimeout(function(){
-			$("#messageBox").fadeOut(500);
-			setTimeout(function(){
-				$("#messageBox").css("transform", "translate3d(0,0,0)");
-			}, 500);
-		}, 800);
+			$("#messageBox").fadeOut(500, function(){
+				$("#messageBox").css("transition-duration", "0s").css("transform", "translate3d(0,0,0)");
+			});
+		}, 1000);
 	},
 
 	resultsPageCtrl : function()
@@ -324,7 +327,11 @@ var ViewCtrl =
 		})
 
 		$(document).on("touchend", "#backButton", function(){
-			$("#resultsPage").css("transition","transform ease .3s").css("transform", "translate3d(0,0,0)");
+			var translate = $("#resultsPage").css("transform");
+			var array = translate.substring(7);
+			var temp = array.split(",");
+			translateY = parseInt(temp[5]);
+			$("#resultsPage").css("transition","transform ease .3s").css("transform", "translate3d(0,"+translateY+"px,0)");
 			$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(100%,0,0)");
 		});
 
@@ -400,13 +407,11 @@ var ViewCtrl =
 			//horizontal
 			else if(direction == 2)
 			{
-				if((endX - originX)/$("#resultsPage").width() > 0.5 || allTime < 150)
+				if((endX - originX)/$("#resultsPage").width() > 0.5 || ((allTime < 300) && (endX - originX > 0)))
 				{
 					$("#resultsPage").css("transition","transform ease .3s")
 						.css("transform", "translate3d(0,"+translateY+"px,0)");
 					$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(100%,0,0)");
-					// setTimeout($("#resultsPage").css("transition-duration","0s")
-					// 	.css("transform", "translate3d(0,0,0)"), 350);
 				}
 				else
 				{
@@ -416,6 +421,16 @@ var ViewCtrl =
 				}
 			}
 			direction = 0;
+		});
+
+		$(document).on("transitionend", "#resultsPage", function(){
+			var translate = $("#resultsPage").css("transform");
+			var array = translate.substring(7);
+			var temp = array.split(",");
+			translateX = parseInt(temp[4]);
+			if(translateX == 0)
+				$("#resultsPage").css("transition-duration","0s")
+		 		.css("transform", "translate3d(0,0,0)");
 		});
 	},
 }
