@@ -44,6 +44,28 @@ body
 	max-width: 1080px;
 }
 
+#settingButton
+{
+	position: absolute;
+	top: 40%;
+	left: 4.0vmin;
+	width: 6vw;
+	height: 1vmax;
+	border-top: white 5px solid;
+	border-bottom: white 5px solid; 
+}
+
+#settingButton:before
+{
+	content: "";
+	position: absolute;
+	top: calc(1vmax + 5px);
+	left: 0px;
+	width: 6vw;
+	height: 1vmax;
+	border-bottom: white 5px solid; 
+}
+
 .menuText
 {
 	display: inline-block;
@@ -53,10 +75,9 @@ body
 	padding-top: 60px;
 	padding-bottom: 2.6vmax;
 	margin-left: 10%;
-	vertical-align: center;
 }
 
-.menuText:first-child{ margin-left: 32%; }
+.menuText:nth-child(2){ margin-left: 32%; }
 .menuTextNotChoice{ color: #7e7e7e; }
 
 #textBorder
@@ -163,7 +184,7 @@ body
 	padding-top: 1%;
 	padding-bottom: 1%;
 	border-radius: 10px;
-	background: rgba(246,247,251,.8);
+	background: rgba(255,255,255,.6);
 	color: black;
 	text-align: center;
 	-webkit-transition: transform ease .3s;
@@ -229,7 +250,7 @@ body
 #indexContainer
 {
 	z-index: 4;
-	width: 280px;
+	width: 281px;
 	position: absolute; left: 0; right: 0; bottom: 0;
     margin: auto;    /* 有了这个就自动居中了 */
 }
@@ -260,15 +281,6 @@ body
 	padding-bottom: 50%;
 	/*height: 30vmax;*/
 	background-size: 100% 100% !important;
-	/*-webkit-animation: showVideo .3s ease 0s 1;
-	-o-animation: showVideo .3s ease 0s 1;
-	animation: showVideo .3s ease 0s 1;*/
-}
-
-@keyframes showVideo
-{
-	0% {transform : scale(0.8);}
-	100% {transform : scale(1);}
 }
 
 .title
@@ -376,7 +388,7 @@ body
 	width: 100%;
 	height: 100vh;
 	font-family: "微软雅黑";
-	background: #2b2b2b;
+	background: #272d30;
 	text-align: center;
 	-webkit-transition: transform ease .3s;
     transition: transform ease .3s;
@@ -399,7 +411,7 @@ body
 	position: absolute;
 	left: 0;
 	right: 0;
-	top: 25%;
+	top: 30%;
 }
 
 .addInput
@@ -407,37 +419,37 @@ body
 	margin-left:auto;
 	margin-right:auto;
 	margin-bottom: 5%;
-	width: 101%;
-	border: black 2px black;
-	/*border-radius: 10px;*/
-	background: white;
-	font-size: 1.2em;
+	width: 80%;
+	border-radius: 75px;
+	background: rgba(255,255,255,.1);
+	font-size: 1em;
 	padding-top: 3%;
 	padding-bottom: 3%;
-	color: black;
-	-webkit-box-shadow: 1px 1px 1px rgba(0,0,0,1);
-    box-shadow: 1px 1px 1px rgba(0,0,0,1);
-    -webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	padding-left: 5%;
+	box-sizing:border-box;
+	color: white;
+	box-shadow: 0px 2px 8px rgba(0,0,0,.2);
+	
 }
 
 .addInput:focus
 {
-	border-color: #66afe9;
-	outline: 0;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),2px 2px 38px rgba(102,175,233,.8);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),2px 2px 38px rgba(102,175,233,.8);
+	outline: 0px;
+	border: 0px;
 }
 
 #typeSelect
 {
-	color: black;
+	/*color: black;*/
 	margin-left: auto;;
 	margin-right: auto;
-	width: 100%;
-	background: white;
+	padding-left: 5%;
+	border-radius: 75px;
+	width: 80%;
+	background: rgba(255,255,255,.1);
 	padding-top: 3%;
 	padding-bottom: 3%;
+	outline: 0;
 }
 
 #typeSelect option{ color: black; }
@@ -553,4 +565,26 @@ body
 	left: 0;
 	width: 50px;
 	transform: rotate(-45deg);
+}
+
+/*settingPage*/
+
+#settingPage
+{
+	z-index: 7;
+	position: fixed;
+	width: 80vw;
+	height: 100vh;
+	background: #1f1f1f;
+	box-shadow: 2px 2px 8px black;
+	transform: translateX(-100%);
+}
+
+#settingPageBG
+{
+	position: fixed;
+	right: 0;
+	width: 20vw;
+	height: 100vh;
+	background: rgba(0,0,0,.5);
 }
