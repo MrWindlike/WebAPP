@@ -44,7 +44,7 @@ body
 	max-width: 1080px;
 }
 
-#settingButton
+.settingButton
 {
 	position: absolute;
 	top: 40%;
@@ -55,7 +55,7 @@ body
 	border-bottom: white 5px solid; 
 }
 
-#settingButton:before
+.settingButton:before
 {
 	content: "";
 	position: absolute;
@@ -440,19 +440,50 @@ body
 
 #typeSelect
 {
+	position: relative;
+	height: 100px;
 	/*color: black;*/
 	margin-left: auto;;
 	margin-right: auto;
-	padding-left: 5%;
+	/*padding-left: 5%;*/
 	border-radius: 75px;
 	width: 80%;
 	background: rgba(255,255,255,.1);
-	padding-top: 3%;
-	padding-bottom: 3%;
+	overflow: hidden;
 	outline: 0;
+	transition: height ease .3s;
 }
 
-#typeSelect option{ color: black; }
+#typeSelect>.settingButton
+{
+	left: auto;
+	top: 25px;
+	right: 40px;
+	transition: transform ease .3s;
+}
+
+.selection
+{
+	transition: transform ease .3s;
+	padding-top: 3%;
+	padding-bottom: 3%;
+}
+
+#typeSelect .options
+{
+	transform: translate(0);
+}
+
+#typeSelect .option
+{ 
+	display: none;
+	width: 100%;
+	color: white;
+	position: absolute;
+	text-align: center;
+	/*transform: translateX(100px);*/
+	transition: transform ease .5s;
+}
 
 #submitButton
 {
@@ -465,6 +496,7 @@ body
 	height: 98px;
 	background: #e6e9ee;
 	border-radius: 50%;
+	box-sizing: border-box;
 }
 
 .tick:nth-child(1)

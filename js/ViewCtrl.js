@@ -266,12 +266,14 @@ var ViewCtrl =
 			$("#inputBox>input:eq(0)").val("");
 			$("#inputBox>input:eq(1)").val("");
 			$("#inputBox>input:eq(2)").val("");
-			$("#inputBox>select").val("独立游戏");
+			$("#typeSelect>.selection").html("独立游戏");
+			$("#typeSelect").selection("closeSelect");
 		};
 
 		$(document).on('touchmove', "#addPage", function(event){
 			event.preventDefault();
 		});
+
 		$(document).on('touchstart', "#addButton", function(){
 			if(clicked == false)
 			{

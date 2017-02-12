@@ -11,9 +11,11 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="js/slide.js"></script>
 	<script type="text/javascript" src="js/bmob-min.js"></script>
 	<script type="text/javascript" src="js/ModelCtrl.js"></script>
 	<script type="text/javascript" src="js/ViewCtrl.js"></script>
+	<script type="text/javascript" src="js/selection.js"></script>
 	<script type="text/javascript">
 		$().ready(function(){
 				ModelCtrl.loadData({"type":"get", "key":""});
@@ -22,13 +24,14 @@
 				ViewCtrl.pageCtrl();
 				ViewCtrl.addCtrl();
 				ViewCtrl.resultsPageCtrl();
+				$("#typeSelect").selection({showNum : 3, icon : ".settingButton", platform : "phone"});
 		})
 	</script>
 </head>
 <body>
 	<div class="blur">
 		<header class="header">
-			<div id="settingButton"></div>
+			<div class="settingButton"></div>
 			<div class="menuText">最新</div>	
 			<div class="menuText menuTextNotChoice">分类</div>
 			<div id="textBorder"></div>
@@ -127,14 +130,26 @@
 					<input contenteditable="true" placeholder="标题(最多十六个字符)" class="addInput"  maxlength="16"></input>
 					<input contenteditable="true" placeholder="链接" class="addInput"></input>
 					<input contenteditable="true" placeholder="作者(最多十个字符)" class="addInput" maxlength="10"></input>
-					<select id="typeSelect">
+					<!-- <select id="typeSelect">
 						<option>独立游戏</option>
 						<option>HTML</option>
 						<option>CSS</option>
 						<option>JavaScript</option>
 						<option>PHP</option>
 						<option>MYSQL</option>
-					</select>
+					</select> -->
+					<div id="typeSelect">
+						<div class="settingButton"></div>
+						<div class="selection">独立游戏</div>
+						<div class="options">
+							<div class="option">独立游戏</div>
+							<div class="option">HTML</div>
+							<div class="option">CSS</div>
+							<div class="option">JavaScript</div>
+							<div class="option">PHP</div>
+							<div class="option">MYSQL</div>
+						</div>
+					</div>
 				</div>
 			</div>
 			<!-- resultsPage -->

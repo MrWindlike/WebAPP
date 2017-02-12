@@ -82,17 +82,17 @@ var ModelCtrl =
 		else
 			author = $("#inputBox>input:eq(2)").val();
 		var type;
-		if($("#inputBox>select").val() == "独立游戏")
+		if($("#typeSelect>.selection").html() == "独立游戏")
 			type = "IndieGame";
-		else if($("#inputBox>select").val() == "HTML")
+		else if($("#typeSelect>.selection").html() == "HTML")
 			type = "HTML";
-		else if($("#inputBox>select").val() == "CSS")
+		else if($("#typeSelect>.selection").html() == "CSS")
 			type = "CSS";
-		else if($("#inputBox>select").val() == "JavaScript")
+		else if($("#typeSelect>.selection").html() == "JavaScript")
 			type = "JavaScript";
-		else if($("#inputBox>select").val() == "PHP")
+		else if($("#typeSelect>.selection").html() == "PHP")
 			type = "PHP";
-		else if($("#inputBox>select").val() == "MYSQL")
+		else if($("#typeSelect>.selection").html() == "MYSQL")
 			type = "MYSQL";
 
 		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
