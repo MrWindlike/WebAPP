@@ -63,6 +63,7 @@ var ModelCtrl =
 							$(tempate).appendTo($(".container:first"));
 					}
 				}
+				$("#mainPage .container>.videoBox, #classifyPage").trigger("loadDataEnd");
 			},
 			error : function(error)
 			{

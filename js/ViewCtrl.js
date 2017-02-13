@@ -65,83 +65,51 @@ var ViewCtrl =
 			};
 		var timer = setInterval(play,3000);
 
-		$(document).on("touchstart", "#Carousel", function(event){
-			startTime = new Date().getTime();
-			clearInterval(timer);
-			originX = startX = event.changedTouches[0].pageX;
-			startY = event.changedTouches[0].pageY;
-			if(index == 0)
-					$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
-			else if(index == 0)
-					$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
-		});
-		$(document).on("touchmove", "#Carousel", function(event){
-			endX = event.changedTouches[0].pageX;
-			endY = event.changedTouches[0].pageY;
+		$carousel.slide({
+			direction : "horizontal",
+			horizontal : "both",
+			startEvent : function(){
+				clearInterval(timer);
+				if(index == 0)
+						$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
+				else if(index == 0)
+						$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
+			},
+			endEvent_Horizontal : function(){
+				//向左滑动
+				if(this.endX - this.originX < 0 && (canMove || index != 3) && change)
+				{
+					if(this.translateX/$("#Carousel").width() > index*0.25 + 0.075 || this.allTime < 200)
+					{
+						forward = true;
+						canMove = false;
+						play();
+					}
+					else
+						$carousel.css("transition", "transform ease .55s")
+					.css("transform", "translate3d(-" + index*25 + "%,0,0)");
+		
+				}
+				//向右滑动
+				else if(this.endX - this.originX > 0 && (canMove || index != 0) && change)
+				{
+					if(this.translateX/$("#Carousel").width() < index*0.25 - 0.075 || this.allTime < 300)
+					{
+						forward = false;
+						canMove = false;
+						play();
+					}
+					else
+						// requestAnimationFrame(function(){
+							$carousel.css("transition", "transform ease .55s")
+							.css("transform", "translate3d(-" + index*25 + "%,0,0)");
+						// });
+				}
 
-			/*MoveX*/
-			var translate = $carousel.css("transform");
-			var array = translate.substring(7);
-			var temp = array.split(",");
-			var translateX = parseInt(temp[4]);
-			var moveX = translateX + (endX - startX);
-			/*MoveY*/
-			translate = $carousel.css("transform");
-			array = translate.substring(7);
-			temp = array.split(",");
-			var translateY = parseInt(temp[5]);
-			var moveY = translateY + (endY - startY);
-			// requestAnimationFrame(function(){
-				if(canMove && (Math.abs(moveX) > Math.abs(moveY)))
-				{
-					change = true;
-					$carousel.css("transition-duration", "0s").css("transform","translate3d(" + moveX + "px, 0, 0)");
-					event.preventDefault();
-				}
-				else if(canMove == false)
-					event.preventDefault();
-				else if(canMove == false || (Math.abs(moveX) <= Math.abs(moveY)))
-					change = false;
-			// });
-			startX = endX;
+				forward = true;
+				timer = setInterval(play,3000);
+			}
 		});
-		$(document).on("touchend", "#Carousel", function(){
-			var translate = $carousel.css("transform");
-			var array = translate.substring(7);
-			var temp = array.split(",");
-			var translateX = Math.abs(parseInt(temp[4]));
-			endTime = new Date().getTime();
-			//向左滑动
-			if(endX - originX < 0 && (canMove || index != 3) && change)
-			{
-				if(translateX/$("#Carousel").width() > index*0.25 + 0.075 || endTime - startTime < 200)
-				{
-					forward = true;
-					canMove = false;
-					play();
-				}
-				else
-					$carousel.css("transition", "transform ease .55s").css("transform", "translate3d(-" + index*25 + "%,0,0)");
-	
-			}
-			//向右滑动
-			else if(endX - originX > 0 && (canMove || index != 0) && change)
-			{
-				if(translateX/$("#Carousel").width() < index*0.25 - 0.075 || endTime - startTime < 300)
-				{
-					forward = false;
-					canMove = false;
-					play();
-				}
-				else
-					// requestAnimationFrame(function(){
-						$carousel.css("transition", "transform ease .55s").css("transform", "translate3d(-" + index*25 + "%,0,0)");
-					// });
-			}
-
-			forward = true;
-			timer = setInterval(play,3000);
-		})
 	},
 
 	pageCtrl : function()
@@ -165,93 +133,54 @@ var ViewCtrl =
 			$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(" + pageWidth*0.24*index + "px,0,0)");
 		};
 
-		$(document).on("touchstart", "#mainPage .container>.videoBox, #classifyPage, .menuText", function(event){
+		$(document).on("touchstart", ".menuText", function(event){
 			// event.preventDefault();
-			var $this = $(this);
-			originX = startX = event.changedTouches[0].pageX;
-			originY = startY = event.changedTouches[0].pageY;
-			startScroll = $(window).scrollTop();
-			startTime = new Date().getTime();
-			if($this.hasClass("menuText"))
-				changePage($(".menuText").index(this));
+			changePage($(".menuText").index(this));
 
 		});
 
-		$(document).on("touchmove", "#mainPage .container>.videoBox, #classifyPage", function(event){
-			endX = event.changedTouches[0].pageX;
-			endY = event.changedTouches[0].pageY;
-			endScroll = $(window).scrollTop();
-			var $this = $(this);
-			/*MoveX*/
-			var translate = $("#mainPage").css("transform");
-			var array = translate.substring(7);
-			var temp = array.split(",");
-			var translateX = parseInt(temp[4]), translateY = parseInt(temp[5]);
-			var moveX = translateX + (endX - startX);
-			/*MoveY*/
-			/*moveY = translateY + (endY - startY);
-			var mainPageHeight = $("#mainPage").height();*/
-			if($this.attr("id") == "classifyPage")
-				event.preventDefault();
-
-			if((Math.abs(endY - originY)*3 < Math.abs(endX - originX)) && (startScroll - endScroll == 0) )
-			{
-				isChangePage = true;
-				if((index == 0 && endX - originX < 0) || (index == 1 && endX - originX > 0))
-				{
-					$("#mainPage, #classifyPage").css("transition-duration","0s").css("transform", "translate3d(" + moveX + "px, 0, 0)");
-					$("#textBorder").css("transition-duration","0s").css("transform", "translate3d(" + Math.abs(translateX)*0.24 + "px,0,0)");
-				}
-				else
-					event.preventDefault();
-
-			}
-			else
-				isChangePage = false;
-			/*else if(Math.abs(moveY) > Math.abs(moveX))
-			{
-				if(Math.abs(translateY) < mainPageHeight - screen.height)
-					$("#classifyPage").css("transform", "translate3d(0," + -moveY + "px, 0)");
-					// $("#mainPage").css("transform", "translate3d(0, -436px, 0)");
-			}*/
-			startX = endX;
-			/*startY = endY;*/
+		$("#mainPage .container>.videoBox, #classifyPage").on("loadDataEnd", function(){
+			$("#mainPage .container>.videoBox, #classifyPage").slide({
+				direction : "horizontal",
+				horizontal : "left",
+				moveElement : $("#mainPage, #classifyPage"),
+				startEvent : function(){
+					if(this.element.attr("id") == "classifyPage")
+						this.horizontal = "right";
+				},
+				endEvent_Horizontal : function(){
+					var pageWidth = $("#mainPage").width();
+					if(Math.abs(this.endX - this.originX) >= 40 
+						&& (Math.abs(this.endX - this.originX)/pageWidth > 0.5 || this.allTime < 300))
+					{
+						if(index == 0 && this.endX - this.originX < 0)
+						{
+							index = 1;
+							changePage(index);
+						}
+						else if(index == 1 && this.endX - this.originX > 0)
+						{
+							index = 0;
+							changePage(index);
+						}
+					}
+					//切换失败，返回原页面
+					else
+					{
+						if(index == 0)
+						{
+							$("#mainPage, #classifyPage").css("transition","transform ease .55s").css("transform", "translate3d(0, 0, 0)");
+							$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(0,0,0)");
+						}
+						else
+						{
+							$("#mainPage, #classifyPage").css("transition","transform ease .55s").css("transform", "translate3d(-100%, 0, 0)");
+							$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(" + pageWidth*0.24 + "px,0,0)");
+						}
+					}
+				},
+			});
 		});
-		$(document).on("touchend", "#mainPage .container>.videoBox, #classifyPage", function(event){
-			endX = event.changedTouches[0].pageX;
-			endScroll = $(window).scrollTop();
-			var pageWidth = $("#mainPage").width();
-			endTime = new Date().getTime();
-
-			//滑动切换页
-			if(Math.abs(endX - originX) >= 40 && (Math.abs(endX - originX)/pageWidth > 0.5 || endTime - startTime < 300) && isChangePage)
-			{
-				if(index == 0 && endX - originX < 0)
-				{
-					index = 1;
-					changePage(index);
-				}
-				else if(index == 1 && endX - originX > 0)
-				{
-					index = 0;
-					changePage(index);
-				}
-			}
-			//切换失败，返回原页面
-			else
-			{
-				if(index == 0)
-				{
-					$("#mainPage, #classifyPage").css("transition","transform ease .55s").css("transform", "translate3d(0, 0, 0)");
-					$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(0,0,0)");
-				}
-				else
-				{
-					$("#mainPage, #classifyPage").css("transition","transform ease .55s").css("transform", "translate3d(-100%, 0, 0)");
-					$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(" + pageWidth*0.24 + "px,0,0)");
-				}
-			}
-		})
 	},
 
 	addCtrl : function()
@@ -317,7 +246,7 @@ var ViewCtrl =
 	{
 		var startY, endY, originY, startX, endX, originX;
 		var startTime, endTime;
-		var translateY, moveY, transformX, moveX, headerTranslateX, originTranslateX;
+		var translateY, moveY, transformX, moveX, originTranslateX;
 		var direction = 0;		//0 is none, 1 is vertical, 2 is horizontal.
 		$(document).on("touchend", ".icon", function(){
 			var $this = $(this);
@@ -337,92 +266,30 @@ var ViewCtrl =
 			$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(100%,0,0)");
 		});
 
-		$(document).on("touchstart", "#resultsPage", function(event){
-			originY = startY = event.changedTouches[0].pageY;
-			originX = startX = event.changedTouches[0].pageX;
-			startTime = new Date().getTime();
-			var translate = $("#resultsPage").css("transform");
-			var array = translate.substring(7);
-			var temp = array.split(",");
-			originTranslateX = parseInt(temp[4]);
-		});
-		$(document).on("touchmove", "#resultsPage", function(event){
-			event.preventDefault();
-			endY = event.changedTouches[0].pageY;
-			endX = event.changedTouches[0].pageX;
-			var translate = $("#resultsPage").css("transform");
-			var array = translate.substring(7);
-			var temp = array.split(",");
-			translateY = parseInt(temp[5]);
-			translateX = parseInt(temp[4]);
-			translate = $(".resultsheader").css("transform");
-			array = translate.substring(7);
-			temp = array.split(",");
-			headerTranslateX = parseInt(temp[4]);
-			moveY = translateY + (endY - startY);
-			moveX = translateX + (endX - startX);
-			// console.log(translateX);
-			// console.log(headerTranslateX);
-			if(direction == 0 && (Math.abs(endX - startX) > Math.abs(endY - startY)) )
-				direction = 2;
-			else if(direction == 0 && (Math.abs(endX - startX) < Math.abs(endY - startY)))
-				direction = 1;
-			if(direction == 1 && 
-				(moveY < 0 && moveY > (document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160)))
-				$("#resultsPage").css("transition-duration", "0s").css("transform", "translate3d(-100%,"+moveY+"px,0)");
-			else if(direction == 2 && (endX - originX) > 0)
-			{
-
-				$("#resultsPage").css("transition-duration", "0s").css("transform", "translate3d("+moveX+"px,"+translateY+"px,0)");
+		$("#resultsPage").slide({
+			startEvent : function(){
+				this.contentHeight = ($("#resultsPage>.container").height() + 160);
+				this.originTranslateX = parseInt($("#resultsPage").css("transform").substring(7).split(",")[4]);
+			},
+			moveEvent_Horizontal : function(){
+				console.log(parseInt($("#resultsPage").css("transform").substring(7).split(",")[4]));
 				$(".resultsheader").css("transition-duration", "0s")
-				.css("transform", "translate3d("+(moveX - originTranslateX)+"px,0,0)");
-			}
-
-			startX = endX;
-			startY = endY;
-
-		});
-		$(document).on("touchend", "#resultsPage", function(event){
-			endTime = new Date().getTime();
-			var allTime = endTime - startTime;
-			var lastmove = moveY + ((endY - originY)/allTime*500);
-
-			//vertical
-			if(direction == 1)
-			{
-				if(lastmove < 0 && lastmove > (document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160))
-					$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s")
-				.css("transform", "translate3d(-100%,"+lastmove+"px,0)");
-				else
-				{
-					if(lastmove >= 0)
-						$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s")
-					.css("transform", "translate3d(-100%,0,0)");
-					else if(document.documentElement.clientHeight <= $("#resultsPage>.container").height() - 160)
-					{
-						lastmove = document.documentElement.clientHeight - $("#resultsPage>.container").height() - 160;
-						$("#resultsPage").css("transition","transform cubic-bezier(0.22, 0.61, 0.36, 1) .3s")
-						.css("transform", "translate3d(-100%,"+lastmove+"px,0)");
-					}
-				}
-			}
-			//horizontal
-			else if(direction == 2)
-			{
-				if((endX - originX)/$("#resultsPage").width() > 0.5 || ((allTime < 300) && (endX - originX > 0)))
+				.css("transform", "translate3d("+(this.moveX - this.originTranslateX)+"px,0,0)");
+			},
+			endEvent_Horizontal : function(){
+				if((this.endX - this.originX)/$("#resultsPage").width() > 0.5 || ((this.allTime < 300) && (this.endX - this.originX > 0)))
 				{
 					$("#resultsPage").css("transition","transform ease .3s")
-						.css("transform", "translate3d(0,"+translateY+"px,0)");
+						.css("transform", "translate3d(0,"+this.translateY+"px,0)");
 					$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(100%,0,0)");
 				}
 				else
 				{
 					$("#resultsPage").css("transition","transform ease .3s")
-						.css("transform", "translate3d(-100%,"+translateY+"px,0)");
+						.css("transform", "translate3d(-100%,"+this.translateY+"px,0)");
 					$(".resultsheader").css("transition","transform ease .3s").css("transform", "translate3d(0,0,0)");
 				}
 			}
-			direction = 0;
 		});
 
 		$(document).on("transitionend", "#resultsPage", function(){
