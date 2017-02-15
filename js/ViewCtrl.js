@@ -1,5 +1,8 @@
 var ViewCtrl = 
 {
+	timer : null,
+	play : function(){},
+
 	seachCtrl : function()
 	{
 		$(document).on('touchstart', "#searchButton", function(){
@@ -19,14 +22,31 @@ var ViewCtrl =
 	carouselCtrl : function()
 	{
 		var $carousel = $("#Carousel");
-		var startX, endX, originX, startY, endY;
-		var startTime, endTime;
 		var index = 0;
 		var canMove = true;
 		var forward = true;
 		var change = true;
-
-		var play = function(){
+		var translatePosition = function(){
+			canMove = true;
+			if(index == 0)
+			{
+				$("#Carousel>div:eq(0)").css("transform", "translate3d(0,0,0)");
+				$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
+				$carousel.css("transition-duration", "0s").css("transform","translate3d(0, 0, 0)");
+			}
+			else if(index == 3)
+			{
+				$("#Carousel>div:eq(3)").css("transform", "translate3d(0,0,0)");
+				$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
+				$carousel.css("transition-duration", "0s").css("transform","translate3d(-75%, 0, 0)");
+			}
+			else
+			{
+				$("#Carousel>div:eq(0)").css("transform", "translate3d(0,0,0)");
+				$("#Carousel>div:eq(3)").css("transform", "translate3d(0,0,0)");
+			}
+		};
+		ViewCtrl.play = function(){
 				$("#indexContainer>div:eq("+index+")").removeClass().addClass("index");
 				if(forward)
 					index++;
@@ -34,46 +54,30 @@ var ViewCtrl =
 					index--;
 				
 				// requestAnimationFrame(function(){
-						$carousel.css("transition", "transform ease .55s").css("transform", "translate3d(" + index*-25 + "%,0,0)");
+						$carousel.css("transition", "transform ease .55s")
+						.css("transform", "translate3d(" + index*-25 + "%,0,0)");
 					// });
 				if(index == -1)
 					index = 3;
 				else if(index == 4)
 					index = 0;
 				$("#indexContainer>div:eq("+index+")").removeClass().addClass("indexSelected");
-
-				setTimeout(function(){
-					canMove = true;
-					if(index == 0)
-					{
-						$("#Carousel>div:eq(0)").css("transform", "translate3d(0,0,0)");
-						$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
-						$carousel.css("transition-duration", "0s").css("transform","translate3d(0, 0, 0)");
-					}
-					else if(index == 3)
-					{
-						$("#Carousel>div:eq(3)").css("transform", "translate3d(0,0,0)");
-						$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
-						$carousel.css("transition-duration", "0s").css("transform","translate3d(-75%, 0, 0)");
-					}
-					else
-					{
-						$("#Carousel>div:eq(0)").css("transform", "translate3d(0,0,0)");
-						$("#Carousel>div:eq(3)").css("transform", "translate3d(0,0,0)");
-					}
-				}, 510);
 			};
-		var timer = setInterval(play,3000);
 
+		ViewCtrl.timer = setInterval(ViewCtrl.play,3000);
+		$carousel.on("transitionend", function(){
+			translatePosition();
+		});
 		$carousel.slide({
 			direction : "horizontal",
 			horizontal : "both",
 			startEvent : function(){
-				clearInterval(timer);
+				clearInterval(ViewCtrl.timer);
 				if(index == 0)
 						$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
 				else if(index == 0)
 						$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
+				translatePosition();
 			},
 			endEvent_Horizontal : function(){
 				//向左滑动
@@ -83,7 +87,7 @@ var ViewCtrl =
 					{
 						forward = true;
 						canMove = false;
-						play();
+						ViewCtrl.play();
 					}
 					else
 						$carousel.css("transition", "transform ease .55s")
@@ -97,7 +101,7 @@ var ViewCtrl =
 					{
 						forward = false;
 						canMove = false;
-						play();
+						ViewCtrl.play();
 					}
 					else
 						// requestAnimationFrame(function(){
@@ -107,16 +111,13 @@ var ViewCtrl =
 				}
 
 				forward = true;
-				timer = setInterval(play,3000);
+				ViewCtrl.timer = setInterval(ViewCtrl.play,3000);
 			}
 		});
 	},
 
 	pageCtrl : function()
 	{
-		var startX, endX, originX, startY, endY, originY;
-		var startScroll, endScroll;
-		var startTime, endTime;
 		var index = 0;
 		var isChangePage = true;
 		var changePage = function(i)
@@ -145,11 +146,14 @@ var ViewCtrl =
 				horizontal : "left",
 				moveElement : $("#mainPage, #classifyPage"),
 				startEvent : function(){
-					if(this.element.attr("id") == "classifyPage")
+					if(this.element.attr("id") == "classifyPage"){
+						this.direction = "all";
 						this.horizontal = "right";
+					}
 				},
 				endEvent_Horizontal : function(){
 					var pageWidth = $("#mainPage").width();
+
 					if(Math.abs(this.endX - this.originX) >= 40 
 						&& (Math.abs(this.endX - this.originX)/pageWidth > 0.5 || this.allTime < 300))
 					{
@@ -244,10 +248,6 @@ var ViewCtrl =
 
 	resultsPageCtrl : function()
 	{
-		var startY, endY, originY, startX, endX, originX;
-		var startTime, endTime;
-		var translateY, moveY, transformX, moveX, originTranslateX;
-		var direction = 0;		//0 is none, 1 is vertical, 2 is horizontal.
 		$(document).on("touchend", ".icon", function(){
 			var $this = $(this);
 			var key = $this.attr("data-type");
@@ -272,7 +272,6 @@ var ViewCtrl =
 				this.originTranslateX = parseInt($("#resultsPage").css("transform").substring(7).split(",")[4]);
 			},
 			moveEvent_Horizontal : function(){
-				console.log(parseInt($("#resultsPage").css("transform").substring(7).split(",")[4]));
 				$(".resultsheader").css("transition-duration", "0s")
 				.css("transform", "translate3d("+(this.moveX - this.originTranslateX)+"px,0,0)");
 			},
@@ -292,6 +291,11 @@ var ViewCtrl =
 			}
 		});
 
+		$("#resultsPage").on("transitionend", function(){
+			if($(this).css("transform") == "matrix(1, 0, 0, 1, 0, 0)")
+				$("#resultsPage .videoBox").remove();
+		});
+
 		$(document).on("transitionend", "#resultsPage", function(){
 			var translate = $("#resultsPage").css("transform");
 			var array = translate.substring(7);
@@ -300,6 +304,22 @@ var ViewCtrl =
 			if(translateX == 0)
 				$("#resultsPage").css("transition-duration","0s")
 		 		.css("transform", "translate3d(0,0,0)");
+		});
+	},
+
+	settingPageCtrl : function(){
+		$(".header>.settingButton").on("touchend", function(){
+			$("#pageBG").css("display", "block");
+			$("#settingPage").css("transform", "translate3d(0,0,0)");
+		});
+
+		$("#pageBG").on("touchstart touchmove", function(event){
+			event.preventDefault();
+		});
+
+		$("#pageBG").on("touchend", function(){
+			$("#pageBG").removeAttr("style");
+			$("#settingPage").removeAttr("style");
 		});
 	},
 }

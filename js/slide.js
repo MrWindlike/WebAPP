@@ -89,6 +89,8 @@
 						_this.options.moveElement.css("transition-duration", "0s")
 						.css("transform", "translate3d("+_this.options.moveX+"px,0px,0)");
 				}
+				else
+					_this.options.moveEvent_Vertical();
 				
 				_this.options.startX = _this.options.endX;
 				_this.options.startY = _this.options.endY;
@@ -129,6 +131,8 @@
 					event.preventDefault();
 					_this.options.endEvent_Horizontal();
 				}
+				else
+					_this.options.endEvent_Vertical();
 				_this.options.moveDirection = 0;
 			});
 		}

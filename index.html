@@ -19,11 +19,13 @@
 	<script type="text/javascript">
 		$().ready(function(){
 				ModelCtrl.loadData({"type":"get", "key":""});
+				ModelCtrl.preLoad();
 				ViewCtrl.seachCtrl();
 				ViewCtrl.carouselCtrl();
 				ViewCtrl.pageCtrl();
 				ViewCtrl.addCtrl();
 				ViewCtrl.resultsPageCtrl();
+				ViewCtrl.settingPageCtrl();
 				$("#typeSelect").selection({showNum : 3, icon : ".settingButton", platform : "phone"});
 		})
 	</script>
@@ -50,9 +52,9 @@
 	</div>
 	<div id="bodyView">
 		<div id="bodyBox">
+			<div id="pageBG"></div>
 			<!-- settingPage -->
 			<div id="settingPage">
-				<div id="settingPageBG"></div>
 			</div>
 			<div class="blur">
 				<!-- mainPage -->

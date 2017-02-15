@@ -159,6 +159,21 @@ body
 	/*transform: translate(0,0);*/
 }
 
+#pageBG
+{
+	display: none;
+	z-index: 7;
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0,0,0,.5);
+}
+
+.blur
+{
+	/*transition: -webkit-filter ease .3s;*/
+}
+
 #addButton
 {
 	z-index: 6;
@@ -603,20 +618,12 @@ body
 
 #settingPage
 {
-	z-index: 7;
+	z-index: 8;
 	position: fixed;
 	width: 80vw;
 	height: 100vh;
 	background: #1f1f1f;
 	box-shadow: 2px 2px 8px black;
+	transition: transform ease .3s;
 	transform: translateX(-100%);
-}
-
-#settingPageBG
-{
-	position: fixed;
-	right: 0;
-	width: 20vw;
-	height: 100vh;
-	background: rgba(0,0,0,.5);
 }
