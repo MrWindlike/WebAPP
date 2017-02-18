@@ -34,7 +34,6 @@
 
 		_initEvent : function(){
 			var _this = this;
-			var viewPortisClient = 
 			_this.element.on("touchstart", function(event){
 				if(_this.options.stopPropagetion)
 					event.stopPropagetion();

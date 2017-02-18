@@ -151,6 +151,9 @@ var ViewCtrl =
 						this.horizontal = "right";
 					}
 				},
+				moveEvent_Horizontal : function(){
+					$("#textBorder").css("transition-duration","0s").css("transform", "translate3d(" + Math.abs(this.translateX)*0.24 + "px,0,0)");
+				},
 				endEvent_Horizontal : function(){
 					var pageWidth = $("#mainPage").width();
 
