@@ -3,8 +3,13 @@ var ModelCtrl =
 	times : -2,
 	first : true,
 	loadFinish : false,
+	isLog : false,
 	loadData : function(data)
 	{
+		if(!ModelCtrl.isLog){
+			ViewCtrl.messageBoxCtrl("请先登录账号！");		
+			return ;
+		}
 		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
 		var video = Bmob.Object.extend("video");
 		var query = new Bmob.Query(video);
@@ -116,6 +121,10 @@ var ModelCtrl =
 	preLoad : function()
 	{
 		$(window).on("scroll", function(){
+			if(!ModelCtrl.isLog){
+				ViewCtrl.messageBoxCtrl("请先登录账号！");		
+				return ;
+			}
 			var scrollTop = $(window).scrollTop();
 			if($(document).height() - $(window).height() - scrollTop - 160
 			 <= $(".videoBox").innerHeight()*2 + $("#footer").innerHeight()
@@ -132,13 +141,13 @@ var ModelCtrl =
 	submitData : function()
 	{
 
-		var title = $("#inputBox>input:eq(0)").val();
-		var url = $("#inputBox>input:eq(1)").val();
+		var title = $(".inputBox>input:eq(0)").val();
+		var url = $(".inputBox>input:eq(1)").val();
 		var author;
-		if($("#inputBox>input:eq(2)").val() == "")
+		if($(".inputBox>input:eq(2)").val() == "")
 			author = "佚名";
 		else
-			author = $("#inputBox>input:eq(2)").val();
+			author = $(".inputBox>input:eq(2)").val();
 		var type;
 		if($("#typeSelect>.selection").html() == "独立游戏")
 			type = "IndieGame";
@@ -174,6 +183,74 @@ var ModelCtrl =
 			}
 		});
 	},
+
+	log : function(username, password)
+	{
+		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
+		var user = Bmob.Object.extend("_User");
+		var query = new Bmob.Query(user);
+		var flag = false;
+
+		query.equalTo("username", username);
+		query.equalTo("password", password);
+
+		query.find({
+			success : function(results){
+				if(results.length){
+					ModelCtrl.isLog = true;
+					ModelCtrl.loadData({"type":"get", "key":""});
+					ViewCtrl.messageBoxCtrl("登录成功！");
+					flag = true;
+					$("#logPage").fadeOut(300);
+					$(".logInput:eq(0)").val("");
+					$(".logInput:eq(1)").val("");
+					$("#settingPage .username").html(username);
+					Cookies.set("username", username, new Date().setDate(new Date().getDate() + 30));
+					Cookies.set("password", password, new Date().setDate(new Date().getDate() + 30));
+				}
+				else
+					ViewCtrl.messageBoxCtrl("用户名或密码错误！");
+			},
+			error : function(error){
+				ViewCtrl.messageBoxCtrl(error);
+			}
+		});
+
+		return flag;
+	},
+
+	register : function()
+	{
+		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
+		var User = Bmob.Object.extend("_User");
+		var user = new User();
+
+		user.set("username", $(".logInput:eq(0)").val());
+		user.set("password", $(".logInput:eq(1)").val());
+
+		user.save(null, {
+			success : function(){
+				ViewCtrl.messageBoxCtrl("申请注册成功，请等待审核。");
+				$(".logInput:eq(0)").val("");
+				$(".logInput:eq(1)").val("");
+			},
+			error : function(error){
+				ViewCtrl.messageBoxCtrl("该用户已存在!" + error);
+			}
+		});
+	},
+
+	autoLog : function()
+	{
+		/*Cookies.unset("username");
+		Cookies.unset("password");*/
+		var username = Cookies.get("username"),
+			password = Cookies.get("password");
+		if(username && password)
+			ModelCtrl.log(username, password);
+		else
+			ViewCtrl.messageBoxCtrl("请先登录账号！");
+	}
 };
 
 var str = 
@@ -222,15 +299,3 @@ var str =
 
 	},
 };
-
-var Transform = 
-{
-	//n is the parameter of matrix that you want to get. 
-	getMatrix : function(element, n)
-	{
-		var translate = $(element).css("transform");
-		var array = translate.substring(7);
-		var temp = array.split(",");
-		return parseInt(temp[n]);
-	}
-}

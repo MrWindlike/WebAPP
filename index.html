@@ -11,6 +11,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 
 	<script type="text/javascript" src="js/jquery-3.1.1.js"></script>
+	<script type="text/javascript" src="js/cookies.js"></script>
 	<script type="text/javascript" src="js/slide.js"></script>
 	<script type="text/javascript" src="js/bmob-min.js"></script>
 	<script type="text/javascript" src="js/ModelCtrl.js"></script>
@@ -18,6 +19,7 @@
 	<script type="text/javascript" src="js/selection.js"></script>
 	<script type="text/javascript">
 		$().ready(function(){
+				ModelCtrl.autoLog();
 				ModelCtrl.loadData({"type":"get", "key":""});
 				ModelCtrl.preLoad();
 				ViewCtrl.seachCtrl();
@@ -26,6 +28,7 @@
 				ViewCtrl.addCtrl();
 				ViewCtrl.resultsPageCtrl();
 				ViewCtrl.settingPageCtrl();
+				ViewCtrl.logCtrl();
 				$("#typeSelect").selection({showNum : 3, icon : ".settingButton", platform : "phone"});
 		});
 	</script>
@@ -55,6 +58,9 @@
 			<div id="pageBG"></div>
 			<!-- settingPage -->
 			<div id="settingPage">
+				<div class="userPicture"></div>
+				<div class="username">未登录</div>
+				<div class="settingText">收藏</div>
 			</div>
 			<div class="blur">
 				<!-- mainPage -->
@@ -128,8 +134,8 @@
 						<div class="tick"></div>
 					</div>
 				</div>
-				<div id="inputBox">
-					<input contenteditable="true" placeholder="标题(最多十六个字符)" class="addInput"  maxlength="16"></input>
+				<div class="inputBox">
+					<input contenteditable="true" placeholder="标题" class="addInput" maxlength="45"></input>
 					<input contenteditable="true" placeholder="链接" class="addInput"></input>
 					<input contenteditable="true" placeholder="作者(最多十个字符)" class="addInput" maxlength="10"></input>
 					<!-- <select id="typeSelect">
@@ -157,6 +163,21 @@
 			<!-- resultsPage -->
 			<div id="resultsPage" style="transiton:transform ease .3s">
 				<div class="container"></div>
+			</div>
+			<!-- logPage -->
+			<div id="logPage">
+				<div class="closeButton">
+					<div class="cross"></div>
+					<div class="cross"></div>
+				</div>
+				<div class="inputBox">
+					<input contenteditable="true" placeholder="昵称" class="logInput" maxlength="10"></input>
+					<input contenteditable="true" placeholder="密码" class="logInput" type="password" maxlength="10"></input>
+					<div class="buttonBox">
+						<div class="logButton">登录</div>
+						<div class="logButton">注册</div>
+					</div>
+				</div>
 			</div>
 			<div class="blur">
 				<div id="addButton">

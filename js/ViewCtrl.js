@@ -7,7 +7,7 @@ var ViewCtrl =
 	{
 		$(document).on('touchstart', "#searchButton", function(){
 			var $search = $("#search");
-			if($search.css("transform") == "matrix(0, 0, 0, 1, 0, 0)")
+			if($search.css("transform") === "matrix(0, 0, 0, 1, 0, 0)")
 				$search.css("transform", "scale(1,1)");
 			else
 			{
@@ -28,13 +28,13 @@ var ViewCtrl =
 		var change = true;
 		var translatePosition = function(){
 			canMove = true;
-			if(index == 0)
+			if(index === 0)
 			{
 				$("#Carousel>div:eq(0)").css("transform", "translate3d(0,0,0)");
 				$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
 				$carousel.css("transition-duration", "0s").css("transform","translate3d(0, 0, 0)");
 			}
-			else if(index == 3)
+			else if(index === 3)
 			{
 				$("#Carousel>div:eq(3)").css("transform", "translate3d(0,0,0)");
 				$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
@@ -57,9 +57,9 @@ var ViewCtrl =
 						$carousel.css("transition", "transform ease .55s")
 						.css("transform", "translate3d(" + index*-25 + "%,0,0)");
 					// });
-				if(index == -1)
+				if(index === -1)
 					index = 3;
-				else if(index == 4)
+				else if(index === 4)
 					index = 0;
 				$("#indexContainer>div:eq("+index+")").removeClass().addClass("indexSelected");
 			};
@@ -73,9 +73,9 @@ var ViewCtrl =
 			horizontal : "both",
 			startEvent : function(){
 				clearInterval(ViewCtrl.timer);
-				if(index == 0)
+				if(index === 0)
 						$("#Carousel>div:eq(3)").css("transform", "translate3d(-400%,0,0)");
-				else if(index == 0)
+				else if(index === 0)
 						$("#Carousel>div:eq(0)").css("transform", "translate3d(400%,0,0)");
 				translatePosition();
 			},
@@ -124,7 +124,7 @@ var ViewCtrl =
 		{
 			var pageWidth = $("#mainPage").width();
 			index = i;
-			if(i == 0)
+			if(i === 0)
 				i = 1;
 			else
 				i = 0;
@@ -146,7 +146,7 @@ var ViewCtrl =
 				horizontal : "left",
 				moveElement : $("#mainPage, #classifyPage"),
 				startEvent : function(){
-					if(this.element.attr("id") == "classifyPage"){
+					if(this.element.attr("id") === "classifyPage"){
 						this.direction = "all";
 						this.horizontal = "right";
 					}
@@ -160,12 +160,12 @@ var ViewCtrl =
 					if(Math.abs(this.endX - this.originX) >= 40 
 						&& (Math.abs(this.endX - this.originX)/pageWidth > 0.5 || this.allTime < 300))
 					{
-						if(index == 0 && this.endX - this.originX < 0)
+						if(index === 0 && this.endX - this.originX < 0)
 						{
 							index = 1;
 							changePage(index);
 						}
-						else if(index == 1 && this.endX - this.originX > 0)
+						else if(index === 1 && this.endX - this.originX > 0)
 						{
 							index = 0;
 							changePage(index);
@@ -174,7 +174,7 @@ var ViewCtrl =
 					//切换失败，返回原页面
 					else
 					{
-						if(index == 0)
+						if(index === 0)
 						{
 							$("#mainPage, #classifyPage").css("transition","transform ease .55s").css("transform", "translate3d(0, 0, 0)");
 							$("#textBorder").css("transition","transform ease .55s").css("transform", "translate3d(0,0,0)");
@@ -199,9 +199,9 @@ var ViewCtrl =
 			clicked = false;
 			$("#addButton").css("transform", "rotate(0deg)");
 			$("#addPage").css("transform", "translate3d(0,0,0)");
-			$("#inputBox>input:eq(0)").val("");
-			$("#inputBox>input:eq(1)").val("");
-			$("#inputBox>input:eq(2)").val("");
+			$(".inputBox:eq(0)>input:eq(0)").val("");
+			$(".inputBox:eq(0)>input:eq(1)").val("");
+			$(".inputBox:eq(0)>input:eq(2)").val("");
 			$("#typeSelect>.selection").html("独立游戏");
 			$("#typeSelect").selection("closeSelect");
 		};
@@ -211,7 +211,11 @@ var ViewCtrl =
 		});
 
 		$(document).on('touchstart', "#addButton", function(){
-			if(clicked == false)
+			if(!ModelCtrl.isLog){
+				ViewCtrl.messageBoxCtrl("未登录或没有权限！");		
+				return ;
+			}
+			if(clicked === false)
 			{
 				clicked = true;
 				$("#addButton").css("transform", "rotate(135deg)");
@@ -224,12 +228,12 @@ var ViewCtrl =
 		});
 
 		$(document).on('touchstart', "#submitButton", function(){
-			if($("#inputBox>input:eq(0)").val() == "")
+			if($(".inputBox:eq(0)>input:eq(0)").val() === "")
 			{
 				ViewCtrl.messageBoxCtrl("请输入标题！");
 				return ;
 			}
-			else if($("#inputBox>input:eq(1)").val() == "")
+			else if($(".inputBox:eq(0)>input:eq(1)").val() === "")
 			{
 				ViewCtrl.messageBoxCtrl("请输入链接！");
 				return ;
@@ -241,12 +245,15 @@ var ViewCtrl =
 
 	messageBoxCtrl : function(message)
 	{
-		$("#messageBox").html(message).fadeIn('fast').css("transition", "transform ease .3s").css("transform", "translate3d(0,-50px,0)");
-		setTimeout(function(){
-			$("#messageBox").fadeOut(500, function(){
-				$("#messageBox").css("transition-duration", "0s").css("transform", "translate3d(0,0,0)");
-			});
-		}, 1000);
+		if($("#messageBox").css("display") === "none")
+		{
+			$("#messageBox").html(message).fadeIn('fast').css("transition", "transform ease .3s").css("transform", "translate3d(0,-50px,0)");
+			setTimeout(function(){
+				$("#messageBox").fadeOut(500, function(){
+					$("#messageBox").css("transition-duration", "0s").css("transform", "translate3d(0,0,0)");
+				});
+			}, 1000);
+		}
 	},
 
 	resultsPageCtrl : function()
@@ -295,16 +302,16 @@ var ViewCtrl =
 		});
 
 		$("#resultsPage").on("transitionend", function(){
-			if($(this).css("transform") == "matrix(1, 0, 0, 1, 0, 0)")
+			if($(this).css("transform") === "matrix(1, 0, 0, 1, 0, 0)")
 				$("#resultsPage .videoBox").remove();
 		});
 
-		$(document).on("transitionend", "#resultsPage", function(){
+		$("#resultsPage").on("transitionend", function(){
 			var translate = $("#resultsPage").css("transform");
 			var array = translate.substring(7);
 			var temp = array.split(",");
 			translateX = parseInt(temp[4]);
-			if(translateX == 0)
+			if(translateX === 0)
 				$("#resultsPage").css("transition-duration","0s")
 		 		.css("transform", "translate3d(0,0,0)");
 		});
@@ -323,6 +330,49 @@ var ViewCtrl =
 		$("#pageBG").on("touchend", function(){
 			$("#pageBG").removeAttr("style");
 			$("#settingPage").removeAttr("style");
+		});
+
+		$("#settingPage").on("touchmove", function(event){
+			event.preventDefault();
+		});
+
+		$(".userPicture").on("touchend", function(){
+			if(ModelCtrl.isLog === false)
+				$("#logPage").fadeIn(300);
+		});
+	},
+
+	logCtrl : function(){
+		$("#logPage>.closeButton").on("touchend", function(){
+			$("#logPage").fadeOut(300);
+		});
+
+		$("#logPage .logButton").on("touchend", function(){
+			if($(".logInput:eq(0)").val() === "")
+			{
+				ViewCtrl.messageBoxCtrl("请输入用户名");
+				return ;
+			}
+			else if($(".logInput:eq(0)").val().length < 4)
+			{
+				ViewCtrl.messageBoxCtrl("用户名最少包含四个字符");
+				return ;
+			}
+			if($(".logInput:eq(1)").val() === "")
+			{
+				ViewCtrl.messageBoxCtrl("请输入密码");
+				return ;
+			}
+			else if($(".logInput:eq(1)").val().length < 6)
+			{
+				ViewCtrl.messageBoxCtrl("密码最少包含六个字符");
+				return ;
+			}
+
+			if($(this).index() == 0)
+				ModelCtrl.log($(".logInput:eq(0)").val(), $(".logInput:eq(1)").val());
+			else
+				ModelCtrl.register();
 		});
 	},
 }
