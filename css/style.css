@@ -647,7 +647,7 @@ body
 	margin-right: auto;
 	width: 25vw;
 	height: 25vw;
-	background: black url("../img/莹子.png");
+	background: black url("../img/defaultUserIcon.png");
 	background-size: 100% 100%;
 	border-radius: 50%;
 }
