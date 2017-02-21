@@ -207,6 +207,8 @@ var ModelCtrl =
 					$("#settingPage .username").html(username);
 					Cookies.set("username", username, new Date().setDate(new Date().getDate() + 30));
 					Cookies.set("password", password, new Date().setDate(new Date().getDate() + 30));
+					$('<div class="settingText">注销</div>').appendTo($("#settingPage"));
+					ModelCtrl.unLog();
 				}
 				else
 					ViewCtrl.messageBoxCtrl("用户名或密码错误！");
@@ -250,6 +252,20 @@ var ModelCtrl =
 			ModelCtrl.log(username, password);
 		else
 			ViewCtrl.messageBoxCtrl("请先登录账号！");
+	},
+
+	unLog : function()
+	{
+		$(".settingText:contains(注销)").on("touchend", function(){
+			Cookies.unset("username");
+			Cookies.unset("password");
+			$("#settingPage .username").html("未登录");
+			ModelCtrl.first = true;
+			ModelCtrl.isLog = false;
+			$(".videoBox").remove();
+			ViewCtrl.messageBoxCtrl("注销成功！");
+			$(this).remove();
+		});
 	}
 };
 
