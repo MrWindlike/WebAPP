@@ -4,6 +4,7 @@
 		this.userOptions = options;
 		this.defaultOptions = selection.default;
 		this.options = $.extend({}, this.defaultOptions, this.userOptions);
+		this.options.element = this.element;
 
 		this.options.optionElements = this.element.find(".option");
 		this.options.selection = $(this.element.find(this.options.selection)[0]);
@@ -15,12 +16,11 @@
 			this.options.selectFullHeight = this.options.selectHeight * this.options.optionNum;
 		else
 			this.options.selectFullHeight = this.options.selectHeight * this.options.showNum;
-		this.options.optionHeight = this.element.find(".option").height();
 		if(this.options.platform == "PC")
 			this.options.click = "click";
 		else
 			this.options.click = "touchend";
-		this.init();
+		this._initEvent();
 	};
 
 	selection.default = {
@@ -29,21 +29,15 @@
 		showNum : 5,
 		platform : "PC",
 		options :　".options",
+		hidden : false,
 	};
 
 	selection.prototype = {
-		init : function(){
-			$(this.options.options).css("height", this.options.selectHeight*this.options.optionNum);
-			for(var i = 0; i < this.options.optionNum; i++){
-				var top = i * this.options.selectHeight + (this.options.selectHeight - this.options.optionHeight)/2;
-				$(this.options.optionElements[i]).css("top", top + "px");
-			}
-
-			this._initEvent();
-		},
-
 		closeSelect : function(text){
 			var me = this;
+
+			if(me.options.selection.css("display") !== "none")
+				return true;
 			$(me.options.options).css("transform", "translate3d(0,0,0)");
 			me.options.selection.html(text);
 			for(var i = 0; i < me.options.optionNum; i++){
@@ -59,10 +53,24 @@
 			}
 		},
 
+		hidden : function(){
+			if(this.closeSelect())
+				this.element.fadeOut(300);
+			else
+				this.options.hidden = true;
+		},
+
 		_initEvent : function(){
 			var me = this;
 			var isMove = false;
+
 			me.element.on(this.options.click, function(){
+				me.options.optionHeight = me.element.find(".option").height();
+				$(me.options.options).css("height", me.options.selectHeight*me.options.optionNum);
+				for(var i = 0; i < me.options.optionNum; i++){
+					var top = i * me.options.selectHeight + (me.options.selectHeight - me.options.optionHeight)/2.0;
+					$(me.options.optionElements[i]).css("top", top + "px");
+				}
 				me.options.selection.css("transform", "translate3d(-" + me.options.selectWidth + "px,0,0)").fadeOut(200);
 				me.options.selectIcon.css("transform", "translate3d(-" + me.options.selectWidth + "px,0,0)").fadeOut(200, function(){
 					me.element.css("height", me.options.selectFullHeight + "px");
@@ -86,6 +94,10 @@
 					me.options.selection.fadeIn(200).removeAttr("style");
 					me.options.selectIcon.fadeIn(200).removeAttr("style");
 					$(me.options.options).css("transform", "translate3d(0,0,0)");
+					if(me.options.hidden){
+						me.options.hidden = false;
+						me.element.fadeOut(0);
+					}
 				}
 			});
 

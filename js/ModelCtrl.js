@@ -196,6 +196,8 @@ var ModelCtrl =
 
 		query.find({
 			success : function(results){
+				if(ModelCtrl.isLog)
+					return ;
 				if(results.length){
 					ModelCtrl.isLog = true;
 					ModelCtrl.loadData({"type":"get", "key":""});
@@ -205,9 +207,15 @@ var ModelCtrl =
 					$(".logInput:eq(0)").val("");
 					$(".logInput:eq(1)").val("");
 					$("#settingPage .username").html(username);
-					Cookies.set("username", username, new Date().setDate(new Date().getDate() + 30));
-					Cookies.set("password", password, new Date().setDate(new Date().getDate() + 30));
-					$('<div class="settingText">注销</div>').appendTo($("#settingPage"));
+					if(!Cookies.get("username")){
+						Cookies.set("username", username, new Date().setDate(new Date().getDate() + 30));
+						Cookies.set("password", password, new Date().setDate(new Date().getDate() + 30));
+					}
+					if(results[0].get('sex') === "男")
+						$(".userPicture").css("background-image", 'url("img/manIcon.png")');
+					else
+						$(".userPicture").css("background-image", 'url("img/womanIcon.png")');
+					$('<div class="settingText">注销</div>').appendTo($(".settingBox"));
 					ModelCtrl.unLog();
 				}
 				else
@@ -221,25 +229,85 @@ var ModelCtrl =
 		return flag;
 	},
 
-	register : function()
-	{
+	getCode : function(){
 		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
-		var User = Bmob.Object.extend("_User");
-		var user = new User();
+		var user = Bmob.Object.extend("_User");
 
-		user.set("username", $(".logInput:eq(0)").val());
-		user.set("password", $(".logInput:eq(1)").val());
-
-		user.save(null, {
-			success : function(){
-				ViewCtrl.messageBoxCtrl("申请注册成功，请等待审核。");
-				$(".logInput:eq(0)").val("");
-				$(".logInput:eq(1)").val("");
-			},
-			error : function(error){
-				ViewCtrl.messageBoxCtrl("该用户已存在!" + error);
+		$(".codeButton").on("touchend", function(){
+			var phoneNum = $(".logInput:eq(3)").val();
+			if(phoneNum === ""){
+				ViewCtrl.messageBoxCtrl("请输入手机号!");
+				return ;
+			}
+			else{
+				var query = new Bmob.Query(user);
+				query.equalTo("mobilePhoneNumber", phoneNum);
+				query.find({
+					success : function(results){
+						if(results.length === 0){
+							Bmob.Sms.requestSmsCode({"mobilePhoneNumber" : phoneNum, "template" : "验证码"})
+							.then(
+								function(obj){ViewCtrl.messageBoxCtrl("获取成功！");},
+								function(error){ViewCtrl.messageBoxCtrl("获取失败！");});
+						}
+						else
+							ViewCtrl.messageBoxCtrl("该手机号已被注册!");
+					}
+				});
 			}
 		});
+	},
+
+	register : function()
+	{
+		if($(".logInput:eq(2)").val() === "")
+			ViewCtrl.messageBoxCtrl("请再次输入密码");
+		else if($(".logInput:eq(1)").val() !== $(".logInput:eq(2)").val()){
+			ViewCtrl.messageBoxCtrl("两次输入的密码不一致!");
+			return ;
+		}
+		var phoneNum = $(".logInput:eq(3)").val();
+		if(phoneNum === ""){
+			ViewCtrl.messageBoxCtrl("请输入手机号!");
+			return ;
+		}
+		if($(".logInput:eq(4)").val() === ""){
+			ViewCtrl.messageBoxCtrl("请输入验证码!");
+			return ;
+		}
+		Bmob.Sms.verifySmsCode(phoneNum, $(".logInput:eq(4)").val())
+		.then(
+			function(){
+				Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
+				var User = Bmob.Object.extend("_User");
+				var user = new User();
+
+				user.set("username", $(".logInput:eq(0)").val());
+				user.set("password", $(".logInput:eq(1)").val());
+				user.set("sex", $(".selection:eq(1)").html());
+				user.set("mobilePhoneNumber", $(".logInput:eq(3)").val());
+
+				user.save(null, {
+					success : function(){
+						ViewCtrl.messageBoxCtrl("申请注册成功，请等待审核。");
+						$(".logInput:eq(0)").val("");
+						$(".logInput:eq(1)").val("");
+						$(".logInput:gt(1)").fadeOut(300);
+						$(".typeSelect:eq(1)>.selection").html("男");
+						$(".typeSelect:eq(1)").selection("hidden");
+						$(".codeButton").fadeOut(300);
+						ViewCtrl.isRegisterPage = false;
+					},
+					error : function(error){
+						ViewCtrl.messageBoxCtrl("该用户已存在!" + error);
+					}
+				});
+			},
+			function(error){ 
+				console.log(error);
+				ViewCtrl.messageBoxCtrl("验证码不正确" + error); 
+				return false; 
+			});
 	},
 
 	autoLog : function()
@@ -263,6 +331,7 @@ var ModelCtrl =
 			ModelCtrl.first = true;
 			ModelCtrl.isLog = false;
 			$(".videoBox").remove();
+			$(".userPicture").css("background-image", 'url("img/defaultIcon.png")');
 			ViewCtrl.messageBoxCtrl("注销成功！");
 			$(this).remove();
 		});

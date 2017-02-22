@@ -1,7 +1,7 @@
 var ViewCtrl = 
 {
 	timer : null,
-	play : function(){},
+	isRegisterPage : false,
 
 	seachCtrl : function()
 	{
@@ -202,8 +202,8 @@ var ViewCtrl =
 			$(".inputBox:eq(0)>input:eq(0)").val("");
 			$(".inputBox:eq(0)>input:eq(1)").val("");
 			$(".inputBox:eq(0)>input:eq(2)").val("");
-			$("#typeSelect>.selection").html("独立游戏");
-			$("#typeSelect").selection("closeSelect");
+			$(".typeSelect:eq(0)>.selection").html("独立游戏");
+			$(".typeSelect:eq(0)").selection("closeSelect");
 		};
 
 		$(document).on('touchmove', "#addPage", function(event){
@@ -344,35 +344,75 @@ var ViewCtrl =
 
 	logCtrl : function(){
 		$("#logPage>.closeButton").on("touchend", function(){
-			$("#logPage").fadeOut(300);
+			$(".typeSelect:eq(1)>.selection").html("男");
+			$(".typeSelect:eq(1)").selection("hidden");
+
+			$(".logInput:gt(1)").fadeOut(300, function(){
+				$("#logPage").fadeOut(300, function(){
+					$(".logInput:eq(0)").val("");
+					$(".logInput:eq(1)").val("");
+				});
+			});
+			$(".codeButton").fadeOut(300);
+			ViewCtrl.isRegisterPage = false;
+
 		});
 
 		$("#logPage .logButton").on("touchend", function(){
-			if($(".logInput:eq(0)").val() === "")
-			{
-				ViewCtrl.messageBoxCtrl("请输入用户名");
-				return ;
-			}
-			else if($(".logInput:eq(0)").val().length < 4)
-			{
-				ViewCtrl.messageBoxCtrl("用户名最少包含四个字符");
-				return ;
-			}
-			if($(".logInput:eq(1)").val() === "")
-			{
-				ViewCtrl.messageBoxCtrl("请输入密码");
-				return ;
-			}
-			else if($(".logInput:eq(1)").val().length < 6)
-			{
-				ViewCtrl.messageBoxCtrl("密码最少包含六个字符");
-				return ;
-			}
+			if(!ViewCtrl.isRegisterPage){
+				if($(".logInput:eq(0)").val() === "")
+				{
+					ViewCtrl.messageBoxCtrl("请输入用户名");
+					return ;
+				}
+				if($(".logInput:eq(1)").val() === "")
+				{
+					ViewCtrl.messageBoxCtrl("请输入密码");
+					return ;
+				}
 
-			if($(this).index() == 0)
 				ModelCtrl.log($(".logInput:eq(0)").val(), $(".logInput:eq(1)").val());
-			else
-				ModelCtrl.register();
+
+			}
+			else{
+				$(".logInput:gt(1)").fadeOut(300);
+				$(".typeSelect:eq(1)>.selection").html("男");
+				$(".typeSelect:eq(1)").selection("hidden");
+				$(".codeButton").fadeOut(300);
+				ViewCtrl.isRegisterPage = false;
+			}
 		});
+
+		$("#logPage .registerButton").on("touchend", function(){
+			if(!ViewCtrl.isRegisterPage){
+				$(".logInput:gt(1)").fadeIn(300);
+				$(".typeSelect:eq(1)").fadeIn(300);
+				$(".codeButton").fadeIn(300);
+				ViewCtrl.isRegisterPage = true;
+			}
+			else{
+				if($(".logInput:eq(0)").val() === "")
+				{
+					ViewCtrl.messageBoxCtrl("请输入用户名");
+					return ;
+				}
+				else if($(".logInput:eq(0)").val().length < 4)
+				{
+					ViewCtrl.messageBoxCtrl("用户名最少包含四个字符");
+					return ;
+				}
+				if($(".logInput:eq(1)").val() === "")
+				{
+					ViewCtrl.messageBoxCtrl("请输入密码");
+					return ;
+				}
+				else if($(".logInput:eq(1)").val().length < 6)
+				{
+					ViewCtrl.messageBoxCtrl("密码最少包含六个字符");
+					return ;
+				}
+				ModelCtrl.register();
+			}
+		})
 	},
 }

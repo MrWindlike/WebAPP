@@ -21,6 +21,7 @@
 		$().ready(function(){
 				ModelCtrl.autoLog();
 				ModelCtrl.preLoad();
+				ModelCtrl.getCode();
 				ViewCtrl.seachCtrl();
 				ViewCtrl.carouselCtrl();
 				ViewCtrl.pageCtrl();
@@ -28,7 +29,8 @@
 				ViewCtrl.resultsPageCtrl();
 				ViewCtrl.settingPageCtrl();
 				ViewCtrl.logCtrl();
-				$("#typeSelect").selection({showNum : 3, icon : ".settingButton", platform : "phone"});
+				$(".typeSelect:eq(0)").selection({showNum : 3, icon : ".settingButton", platform : "phone"});
+				$(".typeSelect:eq(1)").selection({icon : ".settingButton", platform : "phone"});
 		});
 	</script>
 </head>
@@ -59,7 +61,9 @@
 			<div id="settingPage">
 				<div class="userPicture"></div>
 				<div class="username">未登录</div>
-				<div class="settingText">收藏</div>
+				<div class="settingBox">
+					<div class="settingText">收藏</div>
+				</div>
 			</div>
 			<div class="blur">
 				<!-- mainPage -->
@@ -145,7 +149,7 @@
 						<option>PHP</option>
 						<option>MYSQL</option>
 					</select> -->
-					<div id="typeSelect">
+					<div class="typeSelect">
 						<div class="settingButton"></div>
 						<div class="selection">独立游戏</div>
 						<div class="options">
@@ -171,10 +175,22 @@
 				</div>
 				<div class="inputBox">
 					<input contenteditable="true" placeholder="昵称" class="logInput" maxlength="10"></input>
-					<input contenteditable="true" placeholder="密码" class="logInput" type="password" maxlength="10"></input>
+					<input contenteditable="true" placeholder="密码" class="logInput" type="password" maxlength="12"></input>
+					<input contenteditable="true" placeholder="确认密码" class="logInput" type="password" maxlength="12" style="display:none"></input>
+					<input contenteditable="true" placeholder="手机号码" class="logInput" style="display:none"></input>
+					<input contenteditable="true" placeholder="验证码" class="logInput" maxlength="6" style="display:none"></input>
+					<div class="codeButton" style="display: none">获取验证码</div>
+					<div class="typeSelect" style="display: none">
+						<div class="settingButton"></div>
+						<div class="selection">男</div>
+						<div class="options">
+							<div class="option">男</div>
+							<div class="option">女</div>
+						</div>
+					</div>
 					<div class="buttonBox">
 						<div class="logButton">登录</div>
-						<div class="logButton">注册</div>
+						<div class="registerButton">注册</div>
 					</div>
 				</div>
 			</div>

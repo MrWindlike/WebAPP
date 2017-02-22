@@ -464,7 +464,7 @@ body
 	border: 0px;
 }
 
-#typeSelect
+.typeSelect
 {
 	position: relative;
 	height: 100px;
@@ -480,7 +480,7 @@ body
 	transition: height ease .3s;
 }
 
-#typeSelect>.settingButton
+.typeSelect>.settingButton
 {
 	left: auto;
 	top: 25px;
@@ -495,12 +495,12 @@ body
 	padding-bottom: 3%;
 }
 
-#typeSelect .options
+.typeSelect .options
 {
 	transform: translate(0);
 }
 
-#typeSelect .option
+.typeSelect .option
 { 
 	display: none;
 	width: 100%;
@@ -633,21 +633,23 @@ body
 	position: fixed;
 	width: 80vw;
 	height: 100vh;
-	background: #1f1f1f;
+	background: linear-gradient(to bottom, #1f1f1f 0%, black 100%);
 	box-shadow: 2px 2px 8px black;
 	transition: transform ease .3s;
 	transform: translateX(-100%);
+	overflow: hidden;
 	/*text-align: center;*/
 }
 
 .userPicture
 {
+	display: block;
 	margin-top: 20%;
 	margin-left: auto;
 	margin-right: auto;
 	width: 25vw;
 	height: 25vw;
-	background: black url("../img/defaultUserIcon.png");
+	background: black url("../img/defaultIcon.png");
 	background-size: 100% 100%;
 	border-radius: 50%;
 }
@@ -660,6 +662,13 @@ body
 	font-size: 1.3em;
 }
 
+.settingBox
+{
+	background: rgba(0,0,0,0.5);
+	height: 100%;
+	box-sizing: border-box;
+}
+
 .settingText
 {
 	font-size: 1.3em;
@@ -669,7 +678,7 @@ body
 	background: rgba(0,0,0,0.5);
 }
 
-.settingText:nth-of-type(3){ margin-top: 25%; }
+.settingText:nth-of-type(1){ margin-top: 25%; }
 
 /*logPage*/
 
@@ -722,17 +731,39 @@ body
 	outline: 0;
 }
 
+.logInput:nth-child(5)
+{
+	display: inline-block;
+	width: 50%;
+	/*transform: translateX(-16.67%);*/
+}
+
+.codeButton
+{
+	display: inline-block;
+	border-radius: 10px;
+	background: rgba(0,0,0,.4);
+	width: 30%;
+	height: 1em;
+	padding-top: 4%;
+	padding-bottom: 4%;
+}
+
+#logPage .typeSelect
+{
+	margin-top: 5%;
+}
+
 .buttonBox
 {
+	margin-top: 10%;
 	margin-left:auto;
 	margin-right:auto;
 }
 
-.logButton
+.logButton, .registerButton
 {
 	display: inline-block;
-	margin-bottom: 5%;
-	margin-top: 20%;
 	width: 40%;
 	border-radius: 75px;
 	background: rgba(0,0,0,.4);
