@@ -149,18 +149,10 @@ var ModelCtrl =
 		else
 			author = $(".inputBox>input:eq(2)").val();
 		var type;
-		if($("#typeSelect>.selection").html() == "独立游戏")
+		if($(".typeSelect>.selection").html() == "独立游戏")
 			type = "IndieGame";
-		else if($("#typeSelect>.selection").html() == "HTML")
-			type = "HTML";
-		else if($("#typeSelect>.selection").html() == "CSS")
-			type = "CSS";
-		else if($("#typeSelect>.selection").html() == "JavaScript")
-			type = "JavaScript";
-		else if($("#typeSelect>.selection").html() == "PHP")
-			type = "PHP";
-		else if($("#typeSelect>.selection").html() == "MYSQL")
-			type = "MYSQL";
+		else
+			type = $(".typeSelect>.selection").html();
 
 		Bmob.initialize("84121d59c2a97a1f8a922763a7a19bfc", "190059def574c736f869932b0bb3a623");
 		var Video = Bmob.Object.extend("video");
@@ -198,6 +190,7 @@ var ModelCtrl =
 			success : function(results){
 				if(ModelCtrl.isLog)
 					return ;
+				//登录成功隐藏登录界面
 				if(results.length){
 					ModelCtrl.isLog = true;
 					ModelCtrl.loadData({"type":"get", "key":""});
@@ -211,11 +204,41 @@ var ModelCtrl =
 						Cookies.set("username", username, new Date().setDate(new Date().getDate() + 30));
 						Cookies.set("password", password, new Date().setDate(new Date().getDate() + 30));
 					}
-					if(results[0].get('sex') === "男")
+					//加载用户头像
+					console.log(results[0].get('iconURL'));
+					if(results[0].get('iconURL'))
+						$(".userPicture").css("background-image", 'url("' + results[0].get('iconURL') + '")');
+					else if(results[0].get('sex') === "男")
 						$(".userPicture").css("background-image", 'url("img/manIcon.png")');
 					else
 						$(".userPicture").css("background-image", 'url("img/womanIcon.png")');
+
 					$('<div class="settingText">注销</div>').appendTo($(".settingBox"));
+					$(".userPicture").attr("for", "xFile");
+
+					//上传用户头像
+					$("#xFile").on("change", function(){
+						var fileType = ["jpg", "png", "bmp"];
+						var type = $("#xFile").val().split('.')[1];
+						var index = $.inArray(type, fileType);
+						if(index === -1){
+							ViewCtrl.messageBoxCtrl("文件格式错误！")
+							return ;
+						}
+						var fileUploadControl = $(this)[0];
+				        if (fileUploadControl.files.length > 0) {
+					        var file = fileUploadControl.files[0];
+					        var name = $(".username").html() + "." + fileType[index];
+					        var fileSaver = new Bmob.File(name, file);     
+					        fileSaver.save().then(
+					        	function(obj){
+					        		results[0].set("iconURL", obj.url());
+					        		results[0].save();
+
+					        		$(".userPicture").css("background-image", 'url("' + obj.url() + '")');
+					        });
+				    }
+					});
 					ModelCtrl.unLog();
 				}
 				else
@@ -333,6 +356,8 @@ var ModelCtrl =
 			ModelCtrl.isLog = false;
 			$(".videoBox").remove();
 			$(".userPicture").css("background-image", 'url("img/defaultIcon.png")');
+			$(".userPicture").removeAttr("for");
+			$("#xFile").unbind("change");
 			ViewCtrl.messageBoxCtrl("注销成功！");
 			$(this).remove();
 		});

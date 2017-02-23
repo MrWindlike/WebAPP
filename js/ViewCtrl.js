@@ -336,7 +336,7 @@ var ViewCtrl =
 			event.preventDefault();
 		});
 
-		$(".userPicture").on("touchend", function(){
+		$(".userPicture, .username").on("touchend", function(){
 			if(ModelCtrl.isLog === false)
 				$("#logPage").fadeIn(300);
 		});
