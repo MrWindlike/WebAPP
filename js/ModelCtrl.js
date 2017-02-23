@@ -296,6 +296,7 @@ var ModelCtrl =
 						$(".typeSelect:eq(1)>.selection").html("男");
 						$(".typeSelect:eq(1)").selection("hidden");
 						$(".codeButton").fadeOut(300);
+						$("#logPage .inputBox").css("transform", "translateY(0%)");
 						ViewCtrl.isRegisterPage = false;
 					},
 					error : function(error){

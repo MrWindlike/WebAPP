@@ -692,13 +692,12 @@ body
 	left: 0;
 	top: 0;
 	width: 100vw;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 #logPage>.inputBox
 {
-	top: 50%;
-	transform: translateY(-50%);
+	bottom: 50%;
 }
 
 .closeButton

@@ -343,6 +343,7 @@ var ViewCtrl =
 	},
 
 	logCtrl : function(){
+
 		$("#logPage>.closeButton").on("touchend", function(){
 			$(".typeSelect:eq(1)>.selection").html("男");
 			$(".typeSelect:eq(1)").selection("hidden");
@@ -354,6 +355,7 @@ var ViewCtrl =
 				});
 			});
 			$(".codeButton").fadeOut(300);
+			$("#logPage .inputBox").css("transform", "translateY(0%)");
 			ViewCtrl.isRegisterPage = false;
 
 		});
@@ -375,6 +377,7 @@ var ViewCtrl =
 
 			}
 			else{
+				$("#logPage .inputBox").css("transform", "translateY(0%)");
 				$(".logInput:gt(1)").fadeOut(300);
 				$(".typeSelect:eq(1)>.selection").html("男");
 				$(".typeSelect:eq(1)").selection("hidden");
@@ -388,6 +391,7 @@ var ViewCtrl =
 				$(".logInput:gt(1)").fadeIn(300);
 				$(".typeSelect:eq(1)").fadeIn(300);
 				$(".codeButton").fadeIn(300);
+				$("#logPage .inputBox").css("transform", "translateY(-15vh)");
 				ViewCtrl.isRegisterPage = true;
 			}
 			else{
