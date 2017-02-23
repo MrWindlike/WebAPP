@@ -391,7 +391,7 @@ var ViewCtrl =
 				$(".logInput:gt(1)").fadeIn(300);
 				$(".typeSelect:eq(1)").fadeIn(300);
 				$(".codeButton").fadeIn(300);
-				$("#logPage .inputBox").css("transform", "translateY(-15vh)");
+				$("#logPage .inputBox").css("transform", "translateY(-25vh)");
 				ViewCtrl.isRegisterPage = true;
 			}
 			else{

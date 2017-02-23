@@ -5,13 +5,13 @@
 		this.userOptions = options;
 		this.defaultOptions = slide.default;
 		this.options = $.extend({}, this.defaultOptions, this.userOptions);
-		this.options.moveElement = this.element;
+		if(!this.userOptions.moveElement)
+			this.options.moveElement = this.element;
 		this.options.element = this.element;
 		this.init();
 	};
 
 	slide.default = {
-		moveElement : $(this),
 		stopPropagetion : false,
 		viewportHeight : document.documentElement.clientHeight,
 		contentHeight : 0,
