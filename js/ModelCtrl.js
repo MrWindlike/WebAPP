@@ -336,8 +336,6 @@ var ModelCtrl =
 
 	autoLog : function()
 	{
-		/*Cookies.unset("username");
-		Cookies.unset("password");*/
 		var username = Cookies.get("username"),
 			password = Cookies.get("password");
 		if(username && password)
